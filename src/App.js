@@ -1,10 +1,9 @@
 import React from 'react'
+import Principal from './components/Principal'
 
 function App() {
   return (
-    <div>
-      <p>Olá</p>
-    </div>
+    <Principal />
   );
 }
 
