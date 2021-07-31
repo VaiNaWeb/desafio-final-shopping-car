@@ -34,7 +34,14 @@ const CardsContainer = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   margin-left: 1rem;
+
+  @media(max-width: 950px){
+    width: 50vw;
+    overflow: auto;
+  }
 `;
+
+
 
 const SideContainer = styled.div`
   width: 38vw;
@@ -55,13 +62,24 @@ const SideContainer = styled.div`
     &:active {
       transform: scale(0.9);
     }
+
+    
+  }
+
+  @media(max-width: 950px){
+      width: 43vw;
+
+      button {
+        width: 100px;
+        
+      }
   }
 `;
 
 // styleds from the cards
 
 const CardContainer = styled.div`
-  width: 14vw;
+  width: 180px;
   border: solid 1px gray;
   border-radius: 0.25rem;
   display: flex;
@@ -69,14 +87,22 @@ const CardContainer = styled.div`
   justify-content: center;
   opacity: ${(props) => (props.active === true ? 1 : 0.4)};
   font-size: 0.8rem;
+
+  @media(max-width: 950px){
+    margin: .3rem;
+  }
+
+  
 `;
 const TitleContainer = styled.div`
   background-color: #f5f5f5;
   width: 100%;
-  height: 2vw;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  
 
   h4 {
     margin: 0.35rem;
@@ -93,6 +119,13 @@ const TitleContainer = styled.div`
     height: 1.5vw;
     cursor: pointer;
   }
+
+  @media(max-width: 950px){
+    button {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const SecondContainer = styled.div`
@@ -104,6 +137,10 @@ const SecondContainer = styled.div`
 
   p {
     line-height: 0;
+  }
+
+  @media(max-width: 950px){
+    height: 70px;
   }
 `;
 // Styled from side
@@ -133,6 +170,10 @@ const Total = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media(max-width: 950px){
+      font-size: .8rem;
+  }
 `;
 
 const SideCard = styled.div`
@@ -171,6 +212,8 @@ const SideCard = styled.div`
       height: 1.5vw;
       cursor: pointer;
     }
+
+   
   }
 
   .side-card-content {
@@ -182,6 +225,19 @@ const SideCard = styled.div`
     p {
       line-height: 0;
     }
+  }
+
+  @media(max-width: 950px){
+      font-size: .8rem;
+
+      .side-card-content{
+        flex-direction: column;
+      }
+
+      .side-card-header button {
+        width: 15px;
+        height: 15px;;
+      }
   }
 `;
 
@@ -216,7 +272,6 @@ export default class Principal extends React.Component {
       ...carro,
       active: true,
     }));
-    console.log(allTrue);
     this.setState({
       carrosMostrados: [],
       total: [],
@@ -253,8 +308,9 @@ export default class Principal extends React.Component {
         </div>
         <Container>
           <CardsContainer>
-            {this.state.carros.map((carro) => (
+            {this.state.carros.map((carro, index) => (
               <CardContainer
+                key={index}
                 active={carro.active}
                 draggable={carro.active}
                 onDragStart={() => this.handleDragStart(carro)}
@@ -299,8 +355,8 @@ export default class Principal extends React.Component {
                   </p>
                 </div>
               ) : (
-                this.state.carrosMostrados.map((carro) => (
-                  <SideCard draggable="false">
+                this.state.carrosMostrados.map((carro, index) => (
+                  <SideCard draggable="false" key={index} >
                     <div className="side-card-header" draggable="false">
                       <h4>{carro.nome}</h4>
                       <button onClick={() => this.removeCar(carro)}>-</button>
