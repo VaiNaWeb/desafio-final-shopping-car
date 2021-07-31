@@ -221,14 +221,14 @@ export default class Principal extends React.Component {
       carrosMostrados: [],
       total: [],
       carros: allTrue,
-      dragController: 0
+      dragController: 0,
     });
   };
 
   handleDragStart = (car) => {
     this.setState({
       dragged: car,
-      dragController: 1
+      dragController: 1,
     });
   };
 
@@ -237,11 +237,11 @@ export default class Principal extends React.Component {
   };
 
   handleDrop = () => {
-    if(this.state.dragController === 1){
+    if (this.state.dragController === 1) {
       this.addCar(this.state.dragged);
       this.setState({
-        dragController: 0
-      })
+        dragController: 0,
+      });
     }
   };
 
@@ -301,7 +301,7 @@ export default class Principal extends React.Component {
               ) : (
                 this.state.carrosMostrados.map((carro) => (
                   <SideCard draggable="false">
-                    <div className="side-card-header" draggable="false" >
+                    <div className="side-card-header" draggable="false">
                       <h4>{carro.nome}</h4>
                       <button onClick={() => this.removeCar(carro)}>-</button>
                     </div>
@@ -323,9 +323,7 @@ export default class Principal extends React.Component {
               <p>Total</p>
               <p>
                 R${" "}
-                {this.state.total !== []
-                  ? this.state.total.reduce((a, b) => a + b, 0).toFixed(3)
-                  : 0}
+                {this.state.carrosMostrados.length === 0 ? 0 : this.state.total.reduce((a, b) => a + b, 0).toFixed(3)}
               </p>
             </Total>
             <button onClick={this.removelAll}>Limpar Tudo</button>
