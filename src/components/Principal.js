@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import carros from "../dados/carros.js";
-import carImg from '../assets/car.png'
+import carImg from "../assets/car.png";
 
 const Mother = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ const Mother = styled.div`
   justify-content: center;
   height: 100vh;
 
-  .title-container{
+  .title-container {
     display: flex;
     height: 10%;
   }
@@ -68,7 +68,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   opacity: ${(props) => (props.active === true ? 1 : 0.4)};
-  font-size: .8rem;
+  font-size: 0.8rem;
 `;
 const TitleContainer = styled.div`
   background-color: #f5f5f5;
@@ -118,7 +118,7 @@ const ViewSide = styled.div`
   overflow: auto;
   align-items: center;
 
-  .img-text{
+  .img-text {
     height: 80%;
     display: flex;
     flex-direction: column;
@@ -221,12 +221,14 @@ export default class Principal extends React.Component {
       carrosMostrados: [],
       total: [],
       carros: allTrue,
+      dragController: 0
     });
   };
 
-  handleDragStart = ( car) => {
+  handleDragStart = (car) => {
     this.setState({
       dragged: car,
+      dragController: 1
     });
   };
 
@@ -234,14 +236,19 @@ export default class Principal extends React.Component {
     e.preventDefault();
   };
 
-  handleDrop = (e) => {
-    this.addCar(this.state.dragged);
+  handleDrop = () => {
+    if(this.state.dragController === 1){
+      this.addCar(this.state.dragged);
+      this.setState({
+        dragController: 0
+      })
+    }
   };
 
   render() {
     return (
       <Mother>
-        <div className='title-container' >
+        <div className="title-container">
           <Title>Loja de carros!</Title>
         </div>
         <Container>
@@ -250,7 +257,7 @@ export default class Principal extends React.Component {
               <CardContainer
                 active={carro.active}
                 draggable={carro.active}
-                onDragStart={() => this.handleDragStart( carro)}
+                onDragStart={() => this.handleDragStart(carro)}
               >
                 <TitleContainer>
                   <h4>{carro.nome}</h4>
@@ -282,28 +289,35 @@ export default class Principal extends React.Component {
             <ViewSide
               onDrop={(e) => this.handleDrop(e)}
               onDragOver={(e) => this.handleDragOver(e)}
-            > {this.state.carrosMostrados.length < 1? <div className='img-text' >
-              <img src={carImg} alt='a red car' style={{'width': '10vw'}} />
-              <p><b>Arraste seus carros prefirodos aqui :)</b></p> 
-            </div>:
-              this.state.carrosMostrados.map((carro) => (
-                <SideCard draggable="false">
-                  <div className="side-card-header">
-                    <h4>{carro.nome}</h4>
-                    <button onClick={() => this.removeCar(carro)}>-</button>
-                  </div>
-                  <div className="side-card-content">
-                    <p>
-                      {" "}
-                      <b>Tipo:</b> {carro.tipo}
-                    </p>
-                    <p>
-                      {" "}
-                      <b>Preço:</b>R$ {carro.preco.toFixed(3)}
-                    </p>
-                  </div>
-                </SideCard>
-              ))}
+            >
+              {" "}
+              {this.state.carrosMostrados.length < 1 ? (
+                <div className="img-text">
+                  <img src={carImg} alt="a red car" style={{ width: "10vw" }} />
+                  <p>
+                    <b>Arraste seus carros prefirodos aqui :)</b>
+                  </p>
+                </div>
+              ) : (
+                this.state.carrosMostrados.map((carro) => (
+                  <SideCard draggable="false">
+                    <div className="side-card-header" draggable="false" >
+                      <h4>{carro.nome}</h4>
+                      <button onClick={() => this.removeCar(carro)}>-</button>
+                    </div>
+                    <div className="side-card-content">
+                      <p>
+                        {" "}
+                        <b>Tipo:</b> {carro.tipo}
+                      </p>
+                      <p>
+                        {" "}
+                        <b>Preço:</b>R$ {carro.preco.toFixed(3)}
+                      </p>
+                    </div>
+                  </SideCard>
+                ))
+              )}
             </ViewSide>
             <Total>
               <p>Total</p>
