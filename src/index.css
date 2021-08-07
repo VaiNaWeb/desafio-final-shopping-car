@@ -1,13 +1,151 @@
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.ttl {
+  text-align: center;
+}
+
+.container-box-Carros {
+  display: flex;
+  background-color: green;
+    width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.box-cart-car {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;  
+  min-height: 60vh;
+  width: 35%;
+  background-color: gray;
+}
+
+.titulo-butao {
+  height: 16%;
+  width: 100%;
+  display: flex;
+  background-color:#E6F2FF;
+  border-radius: 5%;
+  justify-content: space-between;
+}
+
+.cart-car {
+  width: 200px;
+  height: 160px;
+  background-color: white;
+  margin-bottom: 5px;
+  border: double;
+  border-radius: 3%;
+  border-width: 1px; 
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.cart-car:hover {
+  border-color: #00e6e6;
+}
+.cart-car:hover .titulo-butao {
+  background-color: #00e6e6;
+  border-color: #00e6e6;
+}
+
+.lista-car{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 82%;
+  width: 100%;
+  border-radius: 5%;
+  
+}
+
+.cart-carldc{
+  width: 80%;
+  margin-bottom: 5px;
+  border: groove;
+  border: double;
+  border-radius: 3%;
+  border-width: 1px; 
+  }
+.cart-carldc:hover {
+  border-color: #00e6e6;
+}
+.cart-carldc:hover .titulo-butao {
+  background-color: #00e6e6;
+  border-color: #00e6e6;
+}
+
+.titulo-butao-retirar {
+  height: 18%;
+  width: 100%;
+  display: flex;
+  background-color:#E6F2FF;
+  justify-content: space-between;
+  background-color: #00e6e6;
+  border-radius: 3%;
+}
+
+.lista-ldc{
+  display: flex;
+  width: 100%;
+  height: 50px;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;   
+  border-radius: 3%;
+}
+
+.p-section{
+  display: flex;
+  height: 25vh;
+  justify-content: center;
+  align-items: flex-end;
+  }
+
+.lista-de-compras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 60vh;
+  width: 30%;
+  background-image: url(./assets/car.svg);
+  background-size: contain ;
+  background-repeat:no-repeat;
+  background-color: white;
+  background-position: 50% 70%;
+  overflow:auto; 
+}
+
+
+.box-total {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  }
+
+.total {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 50.1%;
+}
+
+.btt {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.add-img {
+  height: 100%;
 }
