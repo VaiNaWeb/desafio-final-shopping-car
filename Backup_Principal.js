@@ -95,11 +95,6 @@ const TitleContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  &:hover {
-    background-color: ${props => props.active? '#5BC0DE':''};
-    color: ${props => props.active? '#fff': ''};
-  }
-
   h4 {
     margin: 0.35rem;
   }
@@ -241,111 +236,97 @@ export default class Principal extends React.Component {
     carrosMostrados: [],
     total: [],
     dragged: {},
-    count: 0,
   };
 
   componentDidMount() {
-    if (localStorage.getItem("cars")) {
-      let valorTotal = JSON.parse(localStorage.getItem("cars"));
+    const items = localStorage.getItem("myCars");
+    console.log(JSON.parse(items));
+    if (items) {
       this.setState({
-        carrosMostrados: valorTotal,
-        total: valorTotal.map((item) => item.preco),
+        carrosMostrados: JSON.parse(items),
       });
-
-      this.setState({
-        carros: JSON.parse(localStorage.getItem('initialCars'))
-      })
     }
   }
 
   componentDidUpdate(_, prevState) {
-    if (this.state.count !== prevState.count) {
-      if (!localStorage.getItem("cars")) {
-        return;
-      } else {
-        let valorTotal = JSON.parse(localStorage.getItem("cars"));
-
-        this.setState({
-          carrosMostrados: valorTotal,
-          total: valorTotal.map((item) => item.preco),
-        });
-      }
+    if (
+      prevState.carrosMostrados.length !== this.state.carrosMostrados.length &&
+      localStorage.getItem("myCars")
+    ) {
+      this.setState({
+        carrosMostrados: JSON.parse(localStorage.getItem("myCars")),
+      });
+      let localId = JSON.parse(localStorage.getItem("myCars"))?.map((item) => {
+        return item.id;
+      });
+    } else if (
+      prevState.carrosMostrados.length !== this.state.carrosMostrados.length &&
+      !localStorage.getItem("myCars")
+    ) {
+      this.setState({
+        carrosMostrados: [],
+      });
     }
   }
 
   addCar = (car) => {
-    const activeFilter = this.state.carros.map(carro => {
-      if(car.id === carro.id){
-        return {...carro, active:false}
-      } else {
-        return carro
-      }
-    })
+    car.active = false;
     this.setState({
       carrosMostrados: [...this.state.carrosMostrados, car],
       total: [...this.state.total, car.preco],
-      count: this.state.count + 1,
-      carros: activeFilter
-    }, () => localStorage.setItem('initialCars', JSON.stringify(this.state.carros)));
+    });
 
-    if (localStorage.getItem("cars")) {
-      localStorage.setItem(
-        "cars",
-        JSON.stringify([...JSON.parse(localStorage.getItem("cars")), car])
-      );
+    if (this.state.carrosMostrados.length === 0) {
+      localStorage.setItem("myCars", JSON.stringify([car]));
     } else {
-      localStorage.setItem("cars", JSON.stringify([car]));
+      localStorage.setItem(
+        "myCars",
+        JSON.stringify([...JSON.parse(localStorage.getItem("myCars")), car])
+      );
     }
 
-    
+    if (localStorage.getItem("myCars") === []) {
+      localStorage.clear("myCars");
+    }
   };
 
   removeCar = (car) => {
-    const activeFilter = this.state.carros.map(carro => {
-      if(car.id === carro.id){
-        car.active = true;
-        console.log(car)
-        return {...carro, active:true}
-      } else {
-        return carro
+    car.active = true;
+    this.setState(
+      {
+        carrosMostrados: this.state.carrosMostrados.filter(
+          (carro) => car.id !== carro.id
+        ),
+        total: [...this.state.total, -car.preco],
+      },
+      () => {
+        localStorage.setItem(
+          "myCars",
+          JSON.stringify(this.state.carrosMostrados)
+        );
+        if (JSON.parse(localStorage.getItem("myCars")).length < 2) {
+          localStorage.removeItem("myCars");
+        } else {
+          localStorage.setItem(
+            "myCars",
+            JSON.stringify(this.state.carrosMostrados)
+          );
+        }
       }
-    })
-    this.setState({
-      carrosMostrados: this.state.carrosMostrados.filter(
-        (carro) => car.id !== carro.id
-      ),
-      total: [...this.state.total, -car.preco],
-      count: this.state.count - 1,
-      carros: activeFilter
-    }, () => localStorage.setItem('initialCars', JSON.stringify(this.state.carros)));
-
-    if (JSON.parse(localStorage.getItem("cars")).length < 2) {
-      localStorage.removeItem("cars");
-
-      this.setState({
-        carros,
-      });
-    } else {
-      let newCars = JSON.parse(localStorage.getItem("cars"));
-      localStorage.setItem(
-        "cars",
-        JSON.stringify(newCars.filter((carro) => car.id !== carro.id))
-      );
-    }
-
-    
+    );
   };
 
   removelAll = () => {
-    
+    const allTrue = this.state.carros.map((carro) => ({
+      ...carro,
+      active: true,
+    }));
     this.setState({
       carrosMostrados: [],
       total: [],
-      carros,
+      carros: allTrue,
       dragController: 0,
     });
-
-    localStorage.removeItem("cars");
   };
 
   handleDragStart = (car) => {
@@ -383,7 +364,7 @@ export default class Principal extends React.Component {
                 draggable={carro.active}
                 onDragStart={() => this.handleDragStart(carro)}
               >
-                <TitleContainer active={carro.active} >
+                <TitleContainer>
                   <h4>{carro.nome}</h4>
                   <button
                     onClick={() => this.addCar(carro)}
@@ -419,7 +400,7 @@ export default class Principal extends React.Component {
                 <div className="img-text">
                   <img src={carImg} alt="a red car" style={{ width: "10vw" }} />
                   <p>
-                    <b>Arraste seus carros preferidos aqui :)</b>
+                    <b>Arraste seus carros prefirodos aqui :)</b>
                   </p>
                 </div>
               ) : (
@@ -452,7 +433,7 @@ export default class Principal extends React.Component {
                   : this.state.total.reduce((a, b) => a + b, 0).toFixed(3)}
               </p>
             </Total>
-            {this.state.carrosMostrados.length >0? <button onClick={this.removelAll}>Limpar Tudo</button>: ''}
+            <button onClick={this.removelAll}>Limpar Tudo</button>
           </SideContainer>
         </Container>
       </Mother>
