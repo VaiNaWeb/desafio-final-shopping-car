@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  height: 95vh;
+`;
 class CarShop extends Component {
   state = {
     cars: [
@@ -60,11 +65,11 @@ class CarShop extends Component {
   };
   render() {
     return (
-      <div>
+      <Container>
         <div>
           <h1>Loja de carros!</h1>
         </div>
-      </div>
+      </Container>
     );
   }
 }
