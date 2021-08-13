@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Add from './assets/add.svg'
+import Remove from './assets/remove.svg'
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
@@ -36,6 +37,9 @@ const Card = styled.div`
   margin: 0px 8px 16px;
   cursor: pointer;
   font-size: 0.8rem;
+  &:hover{
+    border: solid 1px skyblue;
+  }
 `;
 const CarName = styled.div`
   display: flex;
@@ -45,18 +49,22 @@ const CarName = styled.div`
   background-color: rgb(245, 245, 245);
   color: rgb(51, 51, 51);
   border-bottom: solid 1px gray;
+  &:hover{
+    color: #fff;
+    background-color: skyblue;
+    border-bottom: solid 1px skyblue;
+  }
 `;
 const ListContainer = styled.div`
   width: 30%;
-  height: 90%;
-  min-height: 670px;
+  min-height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 `
 const List = styled.div`
 width:100%;
-height:80vh;
+height:70%;
 border:solid 1px gray;
 `
 const Total = styled.div`
@@ -100,7 +108,7 @@ class CarShop extends Component {
       {
         name: 'Corolla',
         company: 'Toyota',
-        price:110000,
+        price: 110000,
         type: 'Sedan'
       },
       {
@@ -122,16 +130,21 @@ class CarShop extends Component {
         type: 'Hatch'
       }
     ],
-    shopList:[]
+    shopList: []
   };
 
-  addCar = () =>{
-
+  addCar = () => {
+    this.setState({
+      shopList: this.state.shopList.concat({
+        cars: this.state.cars,
+        id: Date.now()
+      })
+    })
   }
   render() {
     return (
       <Container>
-        <GlobalStyle/>
+        <GlobalStyle />
         <Title>
           <h1>Loja de carros!</h1>
         </Title>
@@ -141,23 +154,36 @@ class CarShop extends Component {
               <Card>
                 <CarName>
                   <h3>{item.name}</h3>
-                  <img src={Add} alt=""/>
+                  <img onClick={() => { this.addCar() }} src={Add} alt="" />
                 </CarName>
                 <div>
                   <p><b>Montadora:</b> {item.company}</p>
-                  <p><b>Preço:</b> {item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                  <p><b>Preço:</b> {item.price}</p>
                   <p><b>Tipo:</b> {item.type}</p>
                 </div>
               </Card>
             ))}
           </CardContainer>
           <ListContainer>
-              <List>
-              </List>
-              <Total>
-                <h2>Total</h2>
-                <h2>00</h2>
-              </Total>
+            <List>
+              {this.state.shopList.map(item => (
+                <Card>
+                  <CarName>
+                    <h3>{item.name}</h3>
+                    <img src={Remove} alt="" />
+                  </CarName>
+                  <div>
+                    <p><b>Montadora:</b> {item.company}</p>
+                    <p><b>Preço:</b> {item.price}</p>
+                    <p><b>Tipo:</b> {item.type}</p>
+                  </div>
+                </Card>
+              ))}
+            </List>
+            <Total>
+              <h2>Total</h2>
+              <h2>00</h2>
+            </Total>
           </ListContainer>
         </ShopWrapper>
       </Container>
