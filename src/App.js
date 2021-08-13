@@ -153,7 +153,6 @@ class CarShop extends Component {
           </CardContainer>
           <ListContainer>
               <List>
-              <h3>oi</h3>
               </List>
               <Total>
                 <h2>Total</h2>
