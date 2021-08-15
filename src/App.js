@@ -29,7 +29,7 @@ const CardContainer = styled.div`
   flex-wrap:wrap;
 `
 const Card = styled.div`
-  width: 13.75rem;
+  width: 13rem;
   height: 8.75rem;
   border: solid 1px gray;
   border-radius: 6px;
@@ -57,15 +57,39 @@ const CarName = styled.div`
 `;
 const ListContainer = styled.div`
   width: 30%;
-  min-height: 85vh;
+  height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 `
 const List = styled.div`
 width:100%;
-height:70%;
+height:90%;
 border:solid 1px gray;
+overflow-y: scroll;
+`;
+const ListCard = styled.div`
+  width: 95%;
+  height: 5.75rem;
+  border: solid 1px skyblue;
+  border-radius: 6px;
+  text-align: center;
+  margin: 0px 8px 16px;
+  cursor: pointer;
+  font-size: 0.8rem;
+`;
+const ListCarName = styled.div`
+  display: flex;
+  align-items:center;
+  justify-content: space-between;
+  padding: 0 0.5rem 0 0.5rem;
+  color: #fff;
+  background-color: skyblue;
+  border-bottom: solid 1px skyblue;
+`;
+const ListCarProps = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `
 const Total = styled.div`
   width:100%;
@@ -76,70 +100,94 @@ class CarShop extends Component {
   state = {
     cars: [
       {
+        id:1,
         name: 'Jetta',
         company: 'Volkswagen',
         price: 144000,
-        type: 'Sedan'
+        type: 'Sedan',
       },
       {
+        id:2,
         name: 'Polo',
         company: 'Wolkswagen',
         price: 70000,
-        type: 'Hatch'
+        type: 'Hatch',
       },
       {
+        id:3,
         name: 'T-Cross',
         company: 'Wolkswagen',
         price: 123000,
-        type: 'SUV'
+        type: 'SUV',
       },
       {
+        id:4,
         name: 'Tiguan R-line',
         company: 'Wolkswagen',
         price: 146000,
-        type: 'SUV'
+        type: 'SUV',
       },
       {
+        id:5,
         name: 'Civic',
         company: 'Honda',
         price: 115000,
-        type: 'Sedan'
+        type: 'Sedan',
       },
       {
+        id:6,
         name: 'Corolla',
         company: 'Toyota',
         price: 110000,
-        type: 'Sedan'
+        type: 'Sedan',
       },
       {
+        id:7,
         name: 'Corolla Cross',
         company: 'Toyota',
         price: 184000,
-        type: 'SUV'
+        type: 'SUV',
       },
       {
+        id:8,
         name: 'Compass',
         company: 'Jeep',
         price: 132000,
-        type: 'SUV'
+        type: 'SUV',
       },
       {
+        id:9,
         name: 'Golf GTI',
         company: 'Volkswagen',
         price: 138000,
-        type: 'Hatch'
+        type: 'Hatch',
       }
     ],
-    shopList: []
+    shopList: [],
+    total: []
   };
 
-  addCar = () => {
+  
+  addCar = (id) => {
+    const carList = this.state.cars.find((item) => item.id === id);
+    const listPrice= this.state.shopList.reduce((total, item)=> total + item.price, 0) 
     this.setState({
-      shopList: this.state.shopList.concat({
-        cars: this.state.cars,
-        id: Date.now()
-      })
+      shopList:this.state.shopList.concat(carList),
+      total: listPrice
     })
+    console.log(listPrice)
+  }
+
+  removeCar = (id) => {
+    const listPrice= this.state.shopList.reduce((total, numero)=> total - numero.price,0)
+    if (this.state.shopList !== []) {
+      this.setState({
+        shopList: this.state.shopList.filter((item) => {
+          return (item.id !== id)
+        }),
+        total: listPrice
+      })
+    }
   }
   render() {
     return (
@@ -154,7 +202,7 @@ class CarShop extends Component {
               <Card>
                 <CarName>
                   <h3>{item.name}</h3>
-                  <img onClick={() => { this.addCar() }} src={Add} alt="" />
+                  <img onClick={() => { this.addCar(item.id) }} src={Add} alt="" />
                 </CarName>
                 <div>
                   <p><b>Montadora:</b> {item.company}</p>
@@ -167,22 +215,21 @@ class CarShop extends Component {
           <ListContainer>
             <List>
               {this.state.shopList.map(item => (
-                <Card>
-                  <CarName>
+                <ListCard>
+                  <ListCarName>
                     <h3>{item.name}</h3>
-                    <img src={Remove} alt="" />
-                  </CarName>
-                  <div>
-                    <p><b>Montadora:</b> {item.company}</p>
-                    <p><b>Preço:</b> {item.price}</p>
+                    <img onClick={() => { this.removeCar(item.id); }} src={Remove} alt="" />
+                  </ListCarName>
+                  <ListCarProps>
                     <p><b>Tipo:</b> {item.type}</p>
-                  </div>
-                </Card>
+                    <p><b>Preço:</b> {item.price}</p>
+                  </ListCarProps>
+                </ListCard>
               ))}
             </List>
             <Total>
               <h2>Total</h2>
-              <h2>00</h2>
+              <h2>{this.state.total}</h2>
             </Total>
           </ListContainer>
         </ShopWrapper>
