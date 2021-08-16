@@ -182,7 +182,7 @@ class CarShop extends Component {
       shopList: shopList.concat(carList),
       total: listPrice
     })
-    
+    console.log(listPrice)
   }
 
   removeCar = (id) => {
