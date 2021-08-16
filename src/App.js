@@ -4,20 +4,20 @@ import Remove from './assets/remove.svg'
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap');
+const GlobalStyle = createGlobalStyle`;
   box-sizing:border-box;
   padding:0;
   margin:0;
 `
 const Container = styled.div`
   width:100%;
-  font-family: 'Atkinson Hyperlegible', sans-serif;
 `;
 const Title = styled.div`
-  font-size:2vw;
+  height:15vh;  
+  font-size:1.3em;
   display:flex;
   justify-content:center;
+  align-items:center;
 `
 const ShopWrapper = styled.div`  
   display:flex;
@@ -67,11 +67,11 @@ const ListContainer = styled.div`
   align-items: center;
 `
 const List = styled.div`
-width:100%;
-height:90%;
-border:solid 1px gray;
-overflow-y: scroll;
-background-image: url('./assets/car.svg')
+  width:100%;
+  height:90%;
+  border:solid 1px gray;
+  overflow-y: scroll;
+  background-image: url('./assets/car.svg')
 `;
 const ListCard = styled.div`
   width: 95%;
@@ -174,25 +174,30 @@ class CarShop extends Component {
 
   
   addCar = (id) => {
-    const carList = this.state.cars.find((item) => item.id === id);
-    const listPrice= this.state.shopList.reduce((total, item)=> total + item.price, 0) 
+    const {cars, shopList} = this.state
+    const carList = cars.find((item) => item.id === id);
+    const carValue = shopList.map(item => item.price)
+    const listPrice= carValue.reduce((total, item)=> total + item, 0) 
     this.setState({
-      shopList:this.state.shopList.concat(carList),
+      shopList: shopList.concat(carList),
       total: listPrice
     })
-    console.log(listPrice)
+    
   }
 
   removeCar = (id) => {
-    const listPrice= this.state.shopList.reduce((total, numero)=> total - numero.price,0)
-    if (this.state.shopList !== []) {
+    const {shopList} = this.state
+    const carValue = shopList.map(item => item.price)
+    const listPrice= carValue.reduce((total, numero)=> total - numero,0)
+    if (shopList !== []) {
       this.setState({
-        shopList: this.state.shopList.filter((item) => {
+        shopList: shopList.filter((item) => {
           return (item.id !== id)
         }),
         total: listPrice
       })
     }
+    console.log(listPrice)
   }
   render() {
     return (
@@ -203,8 +208,8 @@ class CarShop extends Component {
         </Title>
         <ShopWrapper>
           <CardContainer>
-            {this.state.cars.map(item => (
-              <Card>
+            {this.state.cars.map((item, index) => (
+              <Card key={index}>
                 <CarName>
                   <h3>{item.name}</h3>
                   <img onClick={() => { this.addCar(item.id) }} src={Add} alt="" />
