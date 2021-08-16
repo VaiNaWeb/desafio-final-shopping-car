@@ -42,7 +42,11 @@ const Card = styled.div`
     border: solid 1px skyblue;
     transform:scale(1.05);
     transition: .3s;
-  }
+    .header{
+      color: #fff;
+      background-color: skyblue;
+      border-bottom: solid 1px skyblue;
+    }
   }
 `;
 const CarName = styled.div`
@@ -53,11 +57,6 @@ const CarName = styled.div`
   background-color: rgb(245, 245, 245);
   color: rgb(51, 51, 51);
   border-bottom: solid 1px gray;
-  &:hover{
-    color: #fff;
-    background-color: skyblue;
-    border-bottom: solid 1px skyblue;
-  }
 `;
 const ListContainer = styled.div`
   width: 30%;
@@ -168,36 +167,27 @@ class CarShop extends Component {
         type: 'Hatch',
       }
     ],
-    shopList: [],
-    total: []
+    shopList: []
   };
 
   
   addCar = (id) => {
-    const {cars, shopList} = this.state
-    const carList = cars.find((item) => item.id === id);
-    const carValue = shopList.map(item => item.price)
-    const listPrice= carValue.reduce((total, item)=> total + item, 0) 
+    const {shopList, cars} = this.state
+    const carList = cars.find((item) => item.id === id)
     this.setState({
-      shopList: shopList.concat(carList),
-      total: listPrice
+      shopList: shopList.concat(carList)
     })
-    console.log(listPrice)
   }
 
   removeCar = (id) => {
     const {shopList} = this.state
-    const carValue = shopList.map(item => item.price)
-    const listPrice= carValue.reduce((total, numero)=> total - numero,0)
     if (shopList !== []) {
       this.setState({
         shopList: shopList.filter((item) => {
           return (item.id !== id)
-        }),
-        total: listPrice
+        })
       })
     }
-    console.log(listPrice)
   }
   render() {
     return (
@@ -210,14 +200,14 @@ class CarShop extends Component {
           <CardContainer>
             {this.state.cars.map((item, index) => (
               <Card key={index}>
-                <CarName>
+                <CarName className="header">
                   <h3>{item.name}</h3>
-                  <img onClick={() => { this.addCar(item.id) }} src={Add} alt="" />
+                  <img onClick={() => {this.addCar(item.id)}} src={Add} alt="" />
                 </CarName>
                 <div>
-                  <p><b>Montadora:</b> {item.company}</p>
-                  <p><b>Preço:</b> {item.price}</p>
-                  <p><b>Tipo:</b> {item.type}</p>
+                  <p><strong>Montadora:</strong> {item.company}</p>
+                  <p><strong>Preço:</strong> {item.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</p>
+                  <p><strong>Tipo:</strong> {item.type}</p>
                 </div>
               </Card>
             ))}
@@ -228,18 +218,18 @@ class CarShop extends Component {
                 <ListCard>
                   <ListCarName>
                     <h3>{item.name}</h3>
-                    <img onClick={() => { this.removeCar(item.id); }} src={Remove} alt="" />
+                    <img onClick={() => {this.removeCar(item.id)}} src={Remove} alt="" />
                   </ListCarName>
                   <ListCarProps>
                     <p><b>Tipo:</b> {item.type}</p>
-                    <p><b>Preço:</b> {item.price}</p>
+                    <p><b>Preço:</b> {item.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</p>
                   </ListCarProps>
                 </ListCard>
               ))}
             </List>
             <Total>
               <h2>Total</h2>
-              <h2>{this.state.total}</h2>
+              <h2>{this.state.shopList.reduce((total, item)=> total + item.price, 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</h2>
             </Total>
           </ListContainer>
         </ShopWrapper>
