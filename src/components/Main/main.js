@@ -8,7 +8,7 @@ import Limpar from "../../assets/LIXEIRA.png";
 
 const ContainerCartLdc = styled.div`
   display: flex;
-  /* background-color: green; */
+  //  background-color: green;
   width: 100%;
   justify-content: space-around;
 `;
@@ -20,7 +20,7 @@ const BoxCartCar = styled.section`
   align-items: center;
   min-height: 60vh;
   width: 50%;
-  /* background-color: gray; */
+  // background-color: gray;
   border-style: 16px;
 `;
 
@@ -70,8 +70,11 @@ const ListaCarLdc = styled.ul`
   justify-content: space-around;
   align-items: center;
   background-color: white;
-  border-bottom-left-radius: 1px solid rgb(91, 192, 222);
-  border-bottom-right-radius: 1px solid rgb(91, 192, 222);
+  border-left: 1px solid rgb(91, 192, 222);
+  border-right: 1px solid rgb(91, 192, 222);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom: 1px solid rgb(91, 192, 222);
 `;
 
 const TtlBtBox = styled.div`
@@ -97,9 +100,9 @@ const TtlBtBoxLdc = styled.div`
   height: 30%;
   background-color: #00e6e6;
   border-color: #00e6e6;
+  border-top: 1px solid rgb(91, 192, 222);
   border-left: 1px solid rgb(91, 192, 222);
   border-right: 1px solid rgb(91, 192, 222);
-  border-top: 1px solid rgb(91, 192, 222);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   & :hover {
@@ -149,7 +152,7 @@ const ListaDeCompras = styled.section`
   align-items: center;
   min-height: 60vh;
   width: 40%;
-  /* background-color: rgb(128, 47, 0); */
+  // background-color: rgb(128, 47, 0);
 `;
 
 const BoxCT = styled.div`
@@ -161,7 +164,7 @@ const BoxCT = styled.div`
   border-width: 1px;
   border-style: solid;
   width: 80%;
-  height: 50vh;
+  height: 70vh;
   overflow: auto;
 `;
 
@@ -181,14 +184,14 @@ const IMG = styled.img`
 const BoxResultado = styled.div`
   display: flex;
   justify-content: flex-end;
-  /* background-color: rgb(255, 0, 106); */
+  // background-color: rgb(255, 0, 106);
   align-items: center;
 `;
 
 const Resultado = styled.div`
   display: flex;
   justify-content: space-evenly;
-  /* background-color: pink; */
+  // background-color: pink;
   align-items: center;
   width: 45%;
 `;
@@ -388,18 +391,18 @@ class Main extends Component {
         <BoxResultado>
           <Resultado>
             <h3>Total</h3>
-            <Btt onClick={this.limpacarrinho}>
-              <IMGBtLixeira src={Limpar} alt="Limpar" />
-            </Btt>
             <p>
               {this.state.listaDeCompras
                 .map((ldc) => ldc.preço)
-                .reduce((total, preço) => Number(total) + Number(preço), 0)
+                .reduce((total, preço) => total + preço, 0)
                 .toLocaleString("pt-br", {
                   style: "currency",
                   currency: "BRL"
                 })}
             </p>
+            <Btt onClick={this.limpacarrinho}>
+              <IMGBtLixeira src={Limpar} alt="Limpar" />
+            </Btt>
           </Resultado>
         </BoxResultado>
       </div>
