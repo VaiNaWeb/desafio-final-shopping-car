@@ -1,8 +1,23 @@
 import React from "react";
+import styled from "styled-components";
+
+const BoxTItulo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+`;
+
+const Ttl = styled.h1`
+  text-align: center;
+`;
+
 const Header = () => {
   return (
     <header>
-      <h1 className="ttl">Loja de Carros!</h1>
+      <BoxTItulo>
+        <Ttl>Loja de Carros!</Ttl>
+      </BoxTItulo>
     </header>
   );
 };
