@@ -12,6 +12,13 @@ const Container = styled.div `
 
     &:hover{
         border-color: ${props => props.active? '#5BC0DE': ''} ;
+        cursor: ${props => props.active? 'pointer' : 'no-drop' };
+    }
+
+    &:hover .head{
+        background-color: ${props => props.active? '#5BC0DE': ''};
+        color: ${props => props.active? '#fff': ''};
+        cursor: ${props => props.active? 'pointer' : 'no-drop' };
     }
 `
 
@@ -23,10 +30,7 @@ const CardHead = styled.div `
     background-color: #F5F5F5;
     border-bottom: solid 1px #E6E6E6;
 
-    &:hover{
-        background-color: ${props => props.active? '#5BC0DE': ''};
-        color: ${props => props.active? '#fff': ''}
-    }
+    
 `
 
 const CardBody = styled.div `
@@ -52,7 +56,7 @@ const CardBtnImg = styled.img `
 const Card = ({carName,assembler, price,sort, active, click, drag}) => {
     return(
         <Container active={active} draggable onDragStart={drag} >
-            <CardHead active={active} >
+            <CardHead className='head' active={active} >
                 <CardTexts><b>{carName}</b></CardTexts>
                 <CardBtn disabled={!active} onClick={click} >
                     <CardBtnImg src={add} alt= "botão de adicionar" />

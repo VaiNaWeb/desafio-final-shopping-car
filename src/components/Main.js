@@ -1,9 +1,10 @@
-import {useState, useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import cars from '../data/carros';
 import Card from './Card';
 import CartItems from './CartItems'
 import carImg from '../assets/car.svg'
+import { render } from '@testing-library/react';
 
 
 const MainContender = styled.main `
@@ -29,6 +30,14 @@ const RightContainer = styled.div `
     align-items: flex-end;
 `
 
+const ImgText = styled.div `
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+`
+
 const Cart = styled.div `
     height: 70vh;
     display: flex;
@@ -49,28 +58,42 @@ const Total = styled.div `
 
 const TotalText = styled.p ``
 
-const Main = () => {
-    const [carros, setCarros] = useState(JSON.parse(localStorage.getItem('allCars')) || cars);
-    const [carrosCart, setCarrosCart] = useState( JSON.parse(localStorage.getItem('carrosCart')) || []);
-    const [draggedCar, setDraggedCar] = useState([]);
-    const [total, setTotal]= useState([])
+class Main extends React.Component {
 
-   useEffect(() => {
-    localStorage.setItem('carrosCart', JSON.stringify(carrosCart));
-    localStorage.setItem('allCars', JSON.stringify(carros));
-    setTotal(
-        ()=> {
-           const value = carrosCart.map((carro) => (
-                carro.preco
-           ));
-           return value.reduce((a, b) => a + b, 0)
-        }
-    )
-   }, [carrosCart, carros])
+    state = {
+        carros: JSON.parse(localStorage.getItem('allCars')) || cars,
+        carrosCart: JSON.parse(localStorage.getItem('carrosCart')) || [] ,
+        draggedCar: [] ,
+        total:[] ,
+    }
 
-    const handleClickAdd =  (item) => {
+    componentDidMount(){
+        const total =JSON.parse(localStorage.getItem('carrosCart'))
+        this.setState({
+            total: total.reduce((a,b) => a + b.preco, 0)
+        })
+    }
+
+   componentDidUpdate(_, prevState) {
+    const {carros, carrosCart} = this.state;
+       
+       if(prevState.carros !== carros || prevState.carrosCart !== carrosCart){
+
+        localStorage.setItem('carrosCart', JSON.stringify(this.state.carrosCart));
+        localStorage.setItem('allCars', JSON.stringify(this.state.carros));
+        this.setState({
+            total: carrosCart.reduce((a,b) => a + b.preco, 0)
+             
+        })
+       }
+   }
+
+    handleClickAdd =  (item) => {
+        const {carros, carrosCart} = this.state
        if(item.active){
-        setCarrosCart([...carrosCart, item]);
+        this.setState({
+            carrosCart: [...carrosCart, item]
+        })
         const handleActive = carros.map(carro => {
             if(carro.id === item.id){
                 return {...carro, active: false}
@@ -79,16 +102,21 @@ const Main = () => {
             }
         });
 
-        setCarros(handleActive);
+        this.setState({
+            carros: handleActive
+        })
        }
 
     }
 
-    const handleClickRemove = (item) => {
+    handleClickRemove = (item) => {
+        const {carros, carrosCart} = this.state
         const updatedList = carrosCart.filter(carro => (
             carro.id !== item.id
         ))
-        setCarrosCart(updatedList);
+        this.setState({
+            carrosCart: updatedList
+        });
         const handleActive = carros.map(carro => {
             if(carro.id === item.id){
                 return {...carro, active: true}
@@ -97,7 +125,9 @@ const Main = () => {
             }
         });
 
-        setCarros(handleActive);
+        this.setState({
+            carros: handleActive
+        })
 
         if(carrosCart.length === 1){
             localStorage.removeItem('allCars');
@@ -106,63 +136,82 @@ const Main = () => {
 
     }
 
-    const handleDragStart = (item) => {
+    handleRemoveAll = () => {
+        this.setState({
+            carrosCart: [],
+            carros: cars
+        })
+
+        localStorage.clear()
+    }
+
+    handleDragStart = (item) => {
+        const {carros} = this.state
         const isActive = carros.filter(carro => carro.id === item.id)
         
         if(item.id !== isActive.id){
-            setDraggedCar(item)
+            this.setState({
+                draggedCar: item
+            })
         }
     }
 
-    const handleDrop = (item) => {
+    handleDrop = (item) => {
+        const {carrosCart, draggedCar} = this.state
         const ids = carrosCart.map(carro => carro.id)
 
         if(!ids.includes(draggedCar.id)){
-            handleClickAdd(item)
+            this.handleClickAdd(item)
         }
     }
 
-    return(
-        <MainContender>
-            <LeftContainer>
-                {carros?.map((carro, index) => (
-                    <Card 
-                    carName={carro.nome} 
-                    assembler={carro.montadora} 
-                    price={carro.preco} 
-                    sort={carro.tipo}
-                    active={carro.active}
-                    click={() => handleClickAdd(carro)}
-                    drag={() => handleDragStart(carro)}
-                    />
-                ))}
-            </LeftContainer>
-            <RightContainer>
-                <Cart onDragOver={ e => e.preventDefault()} onDrop={() => handleDrop(draggedCar)} >
-                    {
-                        carrosCart.length < 1 ? <img 
-                        src={carImg} 
-                        style={{'width': '70%'} } 
-                        alt='imagem de um carro preto' 
-                        /> 
-                        : carrosCart.map((carro, index) => (
-                            <CartItems 
-                            carName= {carro.nome}
-                            price={carro.preco}
-                            sort={carro.tipo}
-                            click={() => handleClickRemove(carro)}
-                            
-                            />
-                        ))
-                    }
-                </Cart>
-                <Total>
-                    <TotalText>Total</TotalText>
-                    <TotalText>R$ {carrosCart.length > 0? total + '.000' : 0} </TotalText>
-                </Total>
-            </RightContainer>
-        </MainContender>
-    )
+    render(){
+       
+        return(
+            <MainContender>
+                <LeftContainer>
+                    {this.state.carros?.map((carro, index) => (
+                        <Card 
+                        carName={carro.nome} 
+                        assembler={carro.montadora} 
+                        price={carro.preco} 
+                        sort={carro.tipo}
+                        active={carro.active}
+                        click={() => this.handleClickAdd(carro)}
+                        drag={() => this.handleDragStart(carro)}
+                        />
+                    ))}
+                </LeftContainer>
+                <RightContainer>
+                    <Cart onDragOver={ e => e.preventDefault()} onDrop={() => this.handleDrop(this.state.draggedCar)} >
+                        {
+                            this.state.carrosCart.length < 1 ? <ImgText><img 
+                            src={carImg} 
+                            style={{'width': '70%'} } 
+                            alt='imagem de um carro preto' 
+                            /> 
+                            <p>Arraste seus carros preferidos aqui :)</p>
+                            </ImgText>
+                            : this.state.carrosCart.map((carro, index) => (
+                                <CartItems 
+                                carName= {carro.nome}
+                                price={carro.preco}
+                                sort={carro.tipo}
+                                click={() => this.handleClickRemove(carro)}
+                                
+                                />
+                            ))
+                        }
+                    </Cart>
+                    <Total>
+                        <TotalText>Total</TotalText>
+                        <TotalText>R$ {this.state.carrosCart.length > 0? this.state.total + '.000' : 0} </TotalText>
+                    </Total>
+                    <button onClick={this.handleRemoveAll} >Limpar</button>
+                </RightContainer>
+            </MainContender>
+        )
+    }
 }
 
 export default Main;
