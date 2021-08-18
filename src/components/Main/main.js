@@ -161,7 +161,6 @@ const BlackliT = styled.span`
 
 const ListaDeCompras = styled.section`
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-around;
   align-items: top;
   min-height: 60vh;
@@ -173,7 +172,7 @@ const BoxCT = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background-color: #ffffff;
   border-width: 3px;
   border-style: solid;
@@ -183,19 +182,19 @@ const BoxCT = styled.div`
   overflow: auto;
 `;
 
-//${if(props) => (props.mostrar === false) ?)};
-
 const SectionArraste = styled.div`
-  display: flex ;
+  display: flex;
   flex-direction: column;
   height: 25vh;
   justify-content: center;
-  align-items: center;
+  align-self: center;
   margin-top: 5px;
+  text-align:center
 `;
 
 const IMG = styled.img`
-  width: 80%;
+  width: 400px;
+  height: 400px
   
 `;
 
@@ -398,8 +397,7 @@ class Main extends Component {
                   </ListaCarLdc>
                 </CartCarLdc>
               ))
-              )}
-              
+              )}              
             </BoxCT>
           </ListaDeCompras>
         </ContainerCartLdc>
