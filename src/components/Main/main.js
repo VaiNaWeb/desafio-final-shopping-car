@@ -6,9 +6,14 @@ import ADD from "../../assets/add.svg";
 import Remove from "../../assets/remove.svg";
 import Limpar from "../../assets/LIXEIRA.png";
 
+const BoxLoja = styled.div``;
+const PTT = styled.p``;
+const PGrab = styled.p``;
+const TtlBtLldc = styled.h2``;
+
 const ContainerCartLdc = styled.div`
   display: flex;
-  //  background-color: green;
+  /* background-color: green; */
   width: 100%;
   justify-content: space-around;
 `;
@@ -17,28 +22,27 @@ const BoxCartCar = styled.section`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: top;
   min-height: 60vh;
-  width: 50%;
-  // background-color: gray;
+  width: 40%;
+  /* background-color: gray; */
   border-style: 16px;
 `;
 
 const CartCar = styled.div`
   display: flex;
   flex-direction: column;
-  width: 220px;
-  height: 170px;
+  width: 180px;
+  height: 120px;
   border-radius: 6px;
-  border: solid 1px #e6e6e6;
-  margin: 0px 10px 20px;
-  box-shadow: rgb(204 204 204) 0px 2px 5px;
+  border: solid 1px #e6e6e6;  
+  box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
   cursor: grab;
   opacity: ${(props) => (props.mostrar === true ? 1 : 0.2)};
   font-size: 0.8rem;
   transition: 0.1s;
   &:hover {
-    border-color: #00e6e6;
+    border-color: #5bc0de;
     transform: scale(1.2);
   }
 `;
@@ -47,6 +51,8 @@ const CartCarLdc = styled.div`
   width: 80%;
   margin-top: 10px;
   border-width: 1px;
+  border-radius: 1%;
+  cursor: grab;
   transition: 0.1s;
   &:hover {
     transform: scale(1.2);
@@ -82,14 +88,15 @@ const TtlBtBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  background-color: #f5f5f5;
   border-left: 1px;
   border-right: 1px;
   border-top: 1px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   & :hover {
-    background-color: #00e6e6;
-    border-color: #00e6e6;
+    background-color: #5bc0de;
+    border-color: #5bc0de;
   }
 `;
 
@@ -98,32 +105,31 @@ const TtlBtBoxLdc = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 30%;
-  background-color: #00e6e6;
-  border-color: #00e6e6;
+  background-color: #5bc0de;
+  border-color: #5bc0de;
   border-top: 1px solid rgb(91, 192, 222);
   border-left: 1px solid rgb(91, 192, 222);
   border-right: 1px solid rgb(91, 192, 222);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   & :hover {
-    background-color: #00e6e6;
-    border-color: #00e6e6;
+  border-color: #5bc0de;
   }
 `;
 
 const TtlBt = styled.h2`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
-  display: flex;
-  background-color: #e6f2ff;
   border-top-left-radius: 6px;
-  border-width: 1px;
-  border-style: solid;
+  border-width: 1px;  
   border-color: lightgray;
-  border-top-right-radius: 6px;
-  justify-content: space-between;
+  border-top-right-radius: 6px;  
+  font-size: 14px;
+  font-weight: bold;
+  
 `;
 
 const Btt = styled.button`
@@ -138,9 +144,13 @@ const IMGBt = styled.img`
 `;
 const IMGBtLixeira = styled.img`
   width: 40px;
+  transition: 0.1s;
+  &:hover {
+  transform: scale(1.4);
+  }
 `;
 
-const Blackli = styled.span`
+const BlackliT = styled.span`
   font-weight: bold;
   margin-right: 5px;
 `;
@@ -149,10 +159,10 @@ const ListaDeCompras = styled.section`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: center;
+  align-items: top;
   min-height: 60vh;
   width: 40%;
-  // background-color: rgb(128, 47, 0);
+  /* background-color: rgb(128, 47, 0); */
 `;
 
 const BoxCT = styled.div`
@@ -160,9 +170,10 @@ const BoxCT = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: lightgray;
-  border-width: 1px;
+  background-color: #ffffff;
+  border-width: 3px;
   border-style: solid;
+   border-color: #f5f5f5;
   width: 80%;
   height: 70vh;
   overflow: auto;
@@ -178,22 +189,23 @@ const SectionArraste = styled.div`
 `;
 
 const IMG = styled.img`
-  width: 60%;
+  width: 80%;
+  
 `;
 
 const BoxResultado = styled.div`
   display: flex;
   justify-content: flex-end;
-  // background-color: rgb(255, 0, 106);
+  /* background-color: rgb(255, 0, 106); */
   align-items: center;
 `;
 
 const Resultado = styled.div`
   display: flex;
   justify-content: space-evenly;
-  // background-color: pink;
+  /* background-color: pink; */
   align-items: center;
-  width: 45%;
+  width: 50%;
 `;
 
 class Main extends Component {
@@ -312,16 +324,9 @@ class Main extends Component {
     }
   }
 
-  // number:transforma string em número
-  //.tofixed("quantidade de 0 que vc quer") : fixa a quantidade de zero depois do "."
-  //reduce :  função de somar passando o valor acumulado e o próximo item do array
-  //disabled: evita adicionar mais uma mesma coisa no carrinho se baseando na condição booleana passada em cada item
-
-
-
   render() {
     return (
-      <div>
+      <BoxLoja>
         <ContainerCartLdc>
           <BoxCartCar>
             {this.state.carros.map((item, index) => (
@@ -339,10 +344,10 @@ class Main extends Component {
                 </TtlBtBox>
                 <ListaCar>
                   <li>
-                    <Blackli>Montadora:</Blackli> {item.montadora}
+                    <BlackliT>Montadora:</BlackliT> {item.montadora}
                   </li>
                   <li>
-                    <Blackli>Preço:</Blackli>
+                    <BlackliT>Preço:</BlackliT>
                     {item.preço.toLocaleString("pt-br", {
                       maximumSignificantDigits: 3,
                       style: "currency",
@@ -350,7 +355,7 @@ class Main extends Component {
                     })}
                   </li>
                   <li>
-                    <Blackli>Tipo:</Blackli> {item.tipo}
+                    <BlackliT>Tipo:</BlackliT> {item.tipo}
                   </li>
                 </ListaCar>
               </CartCar>
@@ -361,14 +366,14 @@ class Main extends Component {
               {this.state.listaDeCompras.map((ldc, index) => (
                 <CartCarLdc key={index}>
                   <TtlBtBoxLdc>
-                    <h2>{ldc.nome}</h2>
+                    <TtlBtLldc>{ldc.nome}</TtlBtLldc>
                     <Btt onClick={() => this.retirarCarros(ldc)}>
                       <IMGBt src={Remove} alt="REMOVER" />
                     </Btt>
                   </TtlBtBoxLdc>
                   <ListaCarLdc>
                     <li>
-                      <Blackli>Preço:</Blackli>
+                      <BlackliT>Preço:</BlackliT>
                       {ldc.preço.toLocaleString("pt-br", {
                         maximumSignificantDigits: 3,
                         style: "currency",
@@ -376,14 +381,14 @@ class Main extends Component {
                       })}
                     </li>
                     <li>
-                      <Blackli>Tipo:</Blackli> {ldc.tipo}
+                      <BlackliT>Tipo:</BlackliT> {ldc.tipo}
                     </li>
                   </ListaCarLdc>
                 </CartCarLdc>
               ))}
               <SectionArraste>
                 <IMG src={Car} alt="Carro" />
-                <p>Arraste seus carros preferidos aqui :)</p>
+                <PGrab>Arraste seus carros preferidos aqui :)</PGrab>
               </SectionArraste>
             </BoxCT>
           </ListaDeCompras>
@@ -391,7 +396,7 @@ class Main extends Component {
         <BoxResultado>
           <Resultado>
             <h3>Total</h3>
-            <p>
+            <PTT>
               {this.state.listaDeCompras
                 .map((ldc) => ldc.preço)
                 .reduce((total, preço) => total + preço, 0)
@@ -399,13 +404,13 @@ class Main extends Component {
                   style: "currency",
                   currency: "BRL"
                 })}
-            </p>
+            </PTT>
             <Btt onClick={this.limpacarrinho}>
               <IMGBtLixeira src={Limpar} alt="Limpar" />
             </Btt>
           </Resultado>
         </BoxResultado>
-      </div>
+      </BoxLoja>
     );
   }
 }
