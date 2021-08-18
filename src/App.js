@@ -184,20 +184,32 @@ class CarShop extends Component {
   addCar = (id) => {
     const {shopList, cars} = this.state
     const carList = cars.find((item) => item.id === id)
+    const mapList = cars.map( item => {
+      if(item.id === id){
+        return {...item, isDisabled:true}
+      }
+      return item
+    } )
     this.setState({
       shopList: shopList.concat(carList),
-      
+      cars: mapList
     })
-    console.log(shopList)
   }
 
   removeCar = (id) => {
-    const {shopList} = this.state
+    const {shopList, cars} = this.state
+    const mapList = cars.map( item => {
+      if(item.id === id){
+        return {...item, isDisabled:false}
+      }
+      return item
+    } )
     if (shopList !== []) {
       this.setState({
         shopList: shopList.filter((item) => {
           return (item.id !== id)
         }),
+        cars: mapList
       })
     }
   }
@@ -214,8 +226,8 @@ class CarShop extends Component {
             {cars.map((item, index) => (
               <Card 
               className="card" 
-              key={index} 
-              style={item.isDisabled === false ? {Card} : {pointerEvents: "none", opacity: "0.4"}}
+              key={index}
+              style={item.isDisabled === false ? {Card} : {pointerEvents:"none", opacity:"0.4"}}
               >
                 <CarName className="header">
                   <h3>{item.name}</h3>
