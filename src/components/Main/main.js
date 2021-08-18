@@ -9,7 +9,9 @@ import Limpar from "../../assets/LIXEIRA.png";
 const BoxLoja = styled.div``;
 const PTT = styled.p``;
 const PGrab = styled.p``;
-const TtlBtLldc = styled.h2``;
+const TtlBtLldc = styled.h2`
+margin-left: 10px;
+`;
 
 const ContainerCartLdc = styled.div`
   display: flex;
@@ -23,7 +25,7 @@ const BoxCartCar = styled.section`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: top;
-  min-height: 60vh;
+  max-height: 50vh;
   width: 40%;
   /* background-color: gray; */
   border-style: 16px;
@@ -105,11 +107,13 @@ const TtlBtBoxLdc = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 30%;
+  color: white;
+  font-size: 10px;  
   background-color: #5bc0de;
   border-color: #5bc0de;
-  border-top: 1px solid rgb(91, 192, 222);
-  border-left: 1px solid rgb(91, 192, 222);
-  border-right: 1px solid rgb(91, 192, 222);
+  border-top: 6px solid rgb(91, 192, 222);
+  border-left: 6px solid rgb(91, 192, 222);
+  border-right: 6px solid rgb(91, 192, 222);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   & :hover {
@@ -123,10 +127,10 @@ const TtlBt = styled.h2`
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  border-top-left-radius: 6px;
+  border-top-left-radius: 5px;
   border-width: 1px;  
   border-color: lightgray;
-  border-top-right-radius: 6px;  
+  border-top-right-radius: 5px;  
   font-size: 14px;
   font-weight: bold;
   
@@ -179,8 +183,10 @@ const BoxCT = styled.div`
   overflow: auto;
 `;
 
+//${if(props) => (props.mostrar === false) ?)};
+
 const SectionArraste = styled.div`
-  display: flex;
+  display: flex ;
   flex-direction: column;
   height: 25vh;
   justify-content: center;
@@ -363,7 +369,13 @@ class Main extends Component {
           </BoxCartCar>
           <ListaDeCompras>
             <BoxCT>
-              {this.state.listaDeCompras.map((ldc, index) => (
+              {this.state.listaDeCompras.length < 1 ? (
+            <SectionArraste>
+                <IMG src={Car} alt="Carro" />
+                <PGrab>Arraste seus carros preferidos aqui :)</PGrab>
+              </SectionArraste>
+              ) : (
+              this.state.listaDeCompras.map((ldc, index) => (
                 <CartCarLdc key={index}>
                   <TtlBtBoxLdc>
                     <TtlBtLldc>{ldc.nome}</TtlBtLldc>
@@ -385,11 +397,9 @@ class Main extends Component {
                     </li>
                   </ListaCarLdc>
                 </CartCarLdc>
-              ))}
-              <SectionArraste>
-                <IMG src={Car} alt="Carro" />
-                <PGrab>Arraste seus carros preferidos aqui :)</PGrab>
-              </SectionArraste>
+              ))
+              )}
+              
             </BoxCT>
           </ListaDeCompras>
         </ContainerCartLdc>
