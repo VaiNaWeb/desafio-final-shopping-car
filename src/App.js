@@ -38,7 +38,8 @@ const Card = styled.div`
   margin: 0px 8px 16px;
   cursor: pointer;
   font-size: 0.8rem;
-  &:hover{
+  
+  .card&:hover{
     border: solid 1px skyblue;
     transform:scale(1.05);
     transition: .3s;
@@ -109,6 +110,7 @@ class CarShop extends Component {
         company: 'Volkswagen',
         price: 144000,
         type: 'Sedan',
+        isDisabled:false
       },
       {
         id:2,
@@ -116,6 +118,7 @@ class CarShop extends Component {
         company: 'Wolkswagen',
         price: 70000,
         type: 'Hatch',
+        isDisabled:false
       },
       {
         id:3,
@@ -123,6 +126,7 @@ class CarShop extends Component {
         company: 'Wolkswagen',
         price: 123000,
         type: 'SUV',
+        isDisabled:false
       },
       {
         id:4,
@@ -130,6 +134,7 @@ class CarShop extends Component {
         company: 'Wolkswagen',
         price: 146000,
         type: 'SUV',
+        isDisabled:false
       },
       {
         id:5,
@@ -137,6 +142,7 @@ class CarShop extends Component {
         company: 'Honda',
         price: 115000,
         type: 'Sedan',
+        isDisabled:false
       },
       {
         id:6,
@@ -144,6 +150,7 @@ class CarShop extends Component {
         company: 'Toyota',
         price: 110000,
         type: 'Sedan',
+        isDisabled:false
       },
       {
         id:7,
@@ -151,6 +158,7 @@ class CarShop extends Component {
         company: 'Toyota',
         price: 184000,
         type: 'SUV',
+        isDisabled:false
       },
       {
         id:8,
@@ -158,6 +166,7 @@ class CarShop extends Component {
         company: 'Jeep',
         price: 132000,
         type: 'SUV',
+        isDisabled:false
       },
       {
         id:9,
@@ -165,6 +174,7 @@ class CarShop extends Component {
         company: 'Volkswagen',
         price: 138000,
         type: 'Hatch',
+        isDisabled:false
       }
     ],
     shopList: []
@@ -175,8 +185,10 @@ class CarShop extends Component {
     const {shopList, cars} = this.state
     const carList = cars.find((item) => item.id === id)
     this.setState({
-      shopList: shopList.concat(carList)
+      shopList: shopList.concat(carList),
+      
     })
+    console.log(shopList)
   }
 
   removeCar = (id) => {
@@ -185,11 +197,12 @@ class CarShop extends Component {
       this.setState({
         shopList: shopList.filter((item) => {
           return (item.id !== id)
-        })
+        }),
       })
     }
   }
   render() {
+    const {cars} = this.state
     return (
       <Container>
         <GlobalStyle />
@@ -198,8 +211,12 @@ class CarShop extends Component {
         </Title>
         <ShopWrapper>
           <CardContainer>
-            {this.state.cars.map((item, index) => (
-              <Card key={index}>
+            {cars.map((item, index) => (
+              <Card 
+              className="card" 
+              key={index} 
+              style={item.isDisabled === false ? {Card} : {pointerEvents: "none", opacity: "0.4"}}
+              >
                 <CarName className="header">
                   <h3>{item.name}</h3>
                   <img onClick={() => {this.addCar(item.id)}} src={Add} alt="" />
