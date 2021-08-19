@@ -101,6 +101,23 @@ const Total = styled.div`
   display:flex;
   justify-content:space-between;
 `
+const ClearButton = styled.div`
+padding-bottom: 1rem;
+.button{
+  width:8rem;
+  height: 2.5rem;
+  background-color: rgb(245, 245, 245);
+  border:solid gray 1px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor:pointer;
+}
+&:hover .button{
+  background-color: skyblue;
+  border:solid skyblue 1px;
+  color: white;
+}
+`
 class CarShop extends Component {
   state = {
     cars: [
@@ -204,7 +221,7 @@ class CarShop extends Component {
       }
       return item
     } )
-    if (shopList !== []) {
+    if (shopList.lenght > 0) {
       this.setState({
         shopList: shopList.filter((item) => {
           return (item.id !== id)
@@ -260,6 +277,9 @@ class CarShop extends Component {
               <h2>Total</h2>
               <h2>{this.state.shopList.reduce((total, item)=> total + item.price, 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</h2>
             </Total>
+            <ClearButton>
+              <button className="button">Clear shop list</button>
+            </ClearButton>
           </ListContainer>
         </ShopWrapper>
       </Container>
