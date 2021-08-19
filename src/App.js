@@ -110,7 +110,6 @@ padding-bottom: 1rem;
   border:solid gray 1px;
   border-radius: 6px;
   font-weight: bold;
-  cursor:pointer;
 }
 &:hover .button{
   background-color: skyblue;
@@ -221,7 +220,7 @@ class CarShop extends Component {
       }
       return item
     } )
-    if (shopList.lenght > 0) {
+    if (shopList.length > 0) {
       this.setState({
         shopList: shopList.filter((item) => {
           return (item.id !== id)
@@ -230,6 +229,23 @@ class CarShop extends Component {
       })
     }
   }
+
+  clearShopList = (id) =>{
+    const mapList = this.state.cars.map( item => {
+      if(item.id === id){
+        return {...item, isDisabled:false}
+      }
+      return item
+    } )
+    this.setState({
+      shopList: mapList.filter((item) => {
+        return (item.id === id)
+      }),
+      cars: this.state.cars
+    })
+  }
+
+
   render() {
     const {cars} = this.state
     return (
@@ -278,7 +294,7 @@ class CarShop extends Component {
               <h2>{this.state.shopList.reduce((total, item)=> total + item.price, 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</h2>
             </Total>
             <ClearButton>
-              <button className="button">Clear shop list</button>
+              <button className="button" onClick={() => {this.clearShopList()}}>Clear shop list</button>
             </ClearButton>
           </ListContainer>
         </ShopWrapper>
