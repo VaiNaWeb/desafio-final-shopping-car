@@ -6,14 +6,10 @@ import ADD from "../../assets/add.svg";
 import Remove from "../../assets/remove.svg";
 import Limpar from "../../assets/LIXEIRA.png";
 
-const BoxLoja = styled.div``;
-const PTT = styled.p``;
-const PGrab = styled.p``;
-const TtlBtLldc = styled.h2`
-margin-left: 10px;
-`;
 
-const ContainerCartLdc = styled.div`
+
+
+const ContainerBoxCartLdc = styled.div`
   display: flex;
   /* background-color: green; */
   width: 100%;
@@ -61,7 +57,7 @@ const CartCarLdc = styled.div`
   }
 `;
 
-const ListaCar = styled.ul`
+const ListCar = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -71,7 +67,7 @@ const ListaCar = styled.ul`
   border-radius: 5%;
 `;
 
-const ListaCarLdc = styled.ul`
+const ListCarLdc = styled.ul`
   display: flex;
   width: 100%;
   height: 40px;
@@ -136,6 +132,10 @@ const TtlBt = styled.h2`
   
 `;
 
+const TtlBtLdc = styled.h2`
+margin-left: 10px;
+`;
+
 const Btt = styled.button`
   border: none;
   background: none;
@@ -146,7 +146,7 @@ const IMGBt = styled.img`
   width: 100%;
   height: 100%;
 `;
-const IMGBtLixeira = styled.img`
+const IMGBtTrash = styled.img`
   width: 40px;
   transition: 0.1s;
   &:hover {
@@ -154,12 +154,12 @@ const IMGBtLixeira = styled.img`
   }
 `;
 
-const BlackliT = styled.span`
+const BlackItem = styled.span`
   font-weight: bold;
   margin-right: 5px;
 `;
 
-const ListaDeCompras = styled.section`
+const ShoppingList = styled.section`
   display: flex;
   justify-content: space-around;
   align-items: top;
@@ -182,7 +182,7 @@ const BoxCT = styled.div`
   overflow: auto;
 `;
 
-const SectionArraste = styled.div`
+const SectionDrag = styled.div`
   display: flex;
   flex-direction: column;
   height: 25vh;
@@ -198,20 +198,27 @@ const IMG = styled.img`
   
 `;
 
-const BoxResultado = styled.div`
+const BoxResult = styled.div`
   display: flex;
   justify-content: flex-end;
   /* background-color: rgb(255, 0, 106); */
   align-items: center;
 `;
 
-const Resultado = styled.div`
+const Result = styled.div`
   display: flex;
   justify-content: space-evenly;
   /* background-color: pink; */
   align-items: center;
   width: 50%;
 `;
+
+const BoxStore = styled.div``;
+const Total = styled.p``;
+const PGrab = styled.p``;
+const ListItem = styled.li``
+const ListItemLdc = styled.li``
+const TtlResult = styled.h3``
 
 class Main extends Component {
   state = { carros, listaDeCompras: [], total: [], contador: 0 };
@@ -331,8 +338,8 @@ class Main extends Component {
 
   render() {
     return (
-      <BoxLoja>
-        <ContainerCartLdc>
+      <BoxStore>
+        <ContainerBoxCartLdc>
           <BoxCartCar>
             {this.state.carros.map((item, index) => (
               <CartCar mostrar={item.mostrar} key={index}>
@@ -347,64 +354,64 @@ class Main extends Component {
                     </Btt>
                   </TtlBt>
                 </TtlBtBox>
-                <ListaCar>
-                  <li>
-                    <BlackliT>Montadora:</BlackliT> {item.montadora}
-                  </li>
-                  <li>
-                    <BlackliT>Preço:</BlackliT>
+                <ListCar>
+                  <ListItem>
+                    <BlackItem>Montadora:</BlackItem> {item.montadora}
+                    </ListItem>
+                    <ListItem>
+                    <BlackItem>Preço:</BlackItem>
                     {item.preço.toLocaleString("pt-br", {
                       maximumSignificantDigits: 3,
                       style: "currency",
                       currency: "BRL"
                     })}
-                  </li>
-                  <li>
-                    <BlackliT>Tipo:</BlackliT> {item.tipo}
-                  </li>
-                </ListaCar>
+                  </ListItem>
+                  <ListItem>
+                    <BlackItem>Tipo:</BlackItem> {item.tipo}
+                    </ListItem>
+                </ListCar>
               </CartCar>
             ))}
           </BoxCartCar>
-          <ListaDeCompras>
+          <ShoppingList>
             <BoxCT>
               {this.state.listaDeCompras.length < 1 ? (
-            <SectionArraste>
+            <SectionDrag>
                 <IMG src={Car} alt="Carro" />
                 <PGrab>Arraste seus carros preferidos aqui :)</PGrab>
-              </SectionArraste>
+              </SectionDrag>
               ) : (
               this.state.listaDeCompras.map((ldc, index) => (
                 <CartCarLdc key={index}>
                   <TtlBtBoxLdc>
-                    <TtlBtLldc>{ldc.nome}</TtlBtLldc>
+                    <TtlBtLdc>{ldc.nome}</TtlBtLdc>
                     <Btt onClick={() => this.retirarCarros(ldc)}>
                       <IMGBt src={Remove} alt="REMOVER" />
                     </Btt>
                   </TtlBtBoxLdc>
-                  <ListaCarLdc>
-                    <li>
-                      <BlackliT>Preço:</BlackliT>
+                  <ListCarLdc>
+                    <ListItemLdc>
+                      <BlackItem>Preço:</BlackItem>
                       {ldc.preço.toLocaleString("pt-br", {
                         maximumSignificantDigits: 3,
                         style: "currency",
                         currency: "BRL"
                       })}
-                    </li>
-                    <li>
-                      <BlackliT>Tipo:</BlackliT> {ldc.tipo}
-                    </li>
-                  </ListaCarLdc>
+                    </ListItemLdc>
+                    <ListItemLdc>
+                      <BlackItem>Tipo:</BlackItem> {ldc.tipo}
+                    </ListItemLdc>
+                  </ListCarLdc>
                 </CartCarLdc>
               ))
               )}              
             </BoxCT>
-          </ListaDeCompras>
-        </ContainerCartLdc>
-        <BoxResultado>
-          <Resultado>
-            <h3>Total</h3>
-            <PTT>
+          </ShoppingList>
+        </ContainerBoxCartLdc>
+        <BoxResult>
+          <Result>
+            <TtlResult>Total</TtlResult>
+            <Total>
               {this.state.listaDeCompras
                 .map((ldc) => ldc.preço)
                 .reduce((total, preço) => total + preço, 0)
@@ -412,13 +419,13 @@ class Main extends Component {
                   style: "currency",
                   currency: "BRL"
                 })}
-            </PTT>
+            </Total>
             <Btt onClick={this.limpacarrinho}>
-              <IMGBtLixeira src={Limpar} alt="Limpar" />
+              <IMGBtTrash src={Limpar} alt="Limpar" />
             </Btt>
-          </Resultado>
-        </BoxResultado>
-      </BoxLoja>
+          </Result>
+        </BoxResult>
+      </BoxStore>
     );
   }
 }
