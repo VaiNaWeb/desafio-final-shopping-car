@@ -10,7 +10,6 @@ const GlobalStyle = createGlobalStyle`
     padding; 0;
     box-sizing: border-box;
 `;
-
 const Container = styled.main`
     display: flex;
     width: 100%;
@@ -31,19 +30,25 @@ align-items: center;
 padding: 0.1rem;
 background-color: #f5f5f5;
 `;
-const BoxCar = styled.div`
+const BoxCar = styled.ul`
     text-align: center;
-    width: 200px;
+    list-style:none;
+    width: 180px;
     height: 150px;
     border: 1px solid #d2d2d2;
     border-radius: 2%;
-    margin: 0.5rem;
+    margin-left: 1em;
+    margin-block-end: 1em;
+    padding-inline-start: 0;
     &:hover {
       border: 1px solid #5bc0de;
     }
     &:hover ${TitleCar} {
       background-color: #5bc0de;
     } 
+`;
+const Li = styled.li`
+    margin: 0.3rem;
 `;
 const TitleList = styled.div`
       display:flex;
@@ -64,8 +69,9 @@ const ListContainer = styled.div`
       display:flex;
       flex-direction: column;
       justify-content: space-evenly;
-      border: 1px solid #d2d2d2;
-      border-radius: 2%;
+      border: 1px solid #5bc0de;
+      list-style:none;
+      border-radius: 1%;
       margin: 0.5rem;
       max-heigth: 400px;
       
@@ -85,7 +91,6 @@ const CarBoxInfo = styled.div`
     display: flex;
     flex-flow: wrap;
 `;
-
 const MotherBox = styled.div`
     width:30%;
 `;
@@ -163,81 +168,88 @@ class App extends Component {
         id: 9,
       }],
     carlist: [],
-    totalprice: [0]
+    totalprice: []
   }
 
   handleAdd = (id) => {
     const Vehicles = this.state.car.find((item) => item.id === id);
-    const pricelist = this.state.car.find((item) => item.price === this.state.pricelist)
-    this.setState({
-      carlist: this.state.carlist.concat(Vehicles),
-      totalprice: pricelist
-    })
-    console.log(pricelist)
-  }
+    const Prices = this.state.totalprice.reduce((acc , num) => acc + num.price, 0)
+    if (this.state.carlist !== [this.state.id]) {
+      this.setState({
+        carlist: this.state.carlist.concat(Vehicles),
+        
+      },() => this.setState({
+        totalprice: this.state.totalprice.concat(this.state.carlist)
+      }))
+      console.log(Prices)
+    }}
 
   handleRemove = (id) => {
     if (this.state.carlist !== []) {
       this.setState({
         carlist: this.state.carlist.filter((item) => {
           return (item.id !== id)
+        }),
+        totalprice: this.state.carlist.filter((item) => {
+          return (item.id !== id)
         })
       })
-    }
+  }}
+  handleErase = () => {
+    if (this.state.carlist && this.state.totalprice !== [])
+    this.setState({
+      carlist: "",
+      totalprice: ""
+    })
   }
 
   render(){
     return (
       <div>
         <GlobalStyle/>
-
-
         <Header>
           <h1>Loja de Carros!</h1>
-        </Header>
-        <Container>
-            <CarBoxInfo>
-               {this.state.car.map((item, index) => (
-              <BoxCar key={index}>
-                  <TitleCar>
-                    <h4>{item.name}</h4>
-                    <img onClick={() => this.handleAdd(item.id)} src={add} alt="add button" />
-                  </TitleCar>
-                  <p><b>Montadora:</b> {item.company} </p>
-                  <p><b>Preço:</b> R${item.price} </p>
-                  <p><b>Tipo:</b> {item.type} </p>
-              </BoxCar>
-            ))}
-            </CarBoxInfo>
-            <MotherBox>
-                <ListBox>
-                   {this.state.carlist.map((item, index) => (
-                  <ListContainer key={index}>
-                      <TitleList>
-                        <h4>{item.name}</h4>
-                        <img onClick={() => this.handleRemove(item.id)} src={remove} alt="remove button" />
-                      </TitleList>
-                      <CarInfo>
-                        <p><b>Tipo:</b> {item.type} </p>
-                        <p><b>Preço:</b> R${item.price} </p>
-                      </CarInfo>
-                  </ListContainer>
-                  ))}
-                  <Draghere>
-                  <h4>Arraste seus carros preferidos aqui :)</h4>
-                  </Draghere>
-                  
-                   
-                </ListBox>
-
-              <div>
-                <h4>Total: {this.state.totalprice}</h4>
-              </div>
-
-
-            </MotherBox>
-          </Container>
-
+        </Header>   
+          <Container>
+              <CarBoxInfo>
+                {this.state.car.map((item, index) => (
+                <BoxCar key={index}>
+                    <TitleCar>
+                      <Li>{item.name}</Li>
+                      <img onClick={() => this.handleAdd(item.id)} src={add} alt="add button" />
+                    </TitleCar>
+                    <Li><b>Montadora:</b> {item.company} </Li>
+                    <Li><b>Preço:</b> R${item.price} </Li>
+                    <Li><b>Tipo:</b> {item.type} </Li>
+                </BoxCar>
+              ))}
+              </CarBoxInfo>
+                <MotherBox>
+                    <ListBox>
+                      {this.state.carlist.map((item, index) => (
+                      <ListContainer key={index}>
+                          <TitleList>
+                            <Li>{item.name}</Li>
+                            <img onClick={() => this.handleRemove(item.id)} src={remove} alt="remove button" />
+                          </TitleList>
+                          <CarInfo>
+                            <Li><b>Tipo:</b> {item.type} </Li>
+                            <Li><b>Preço:</b> R${item.price} </Li>
+                          </CarInfo>
+                      </ListContainer>
+                      ))}  
+                        <Draghere>
+                          <h4>Arraste seus carros preferidos aqui :)</h4> 
+                        </Draghere>  
+                    </ListBox>
+                       
+                        <div>
+                          <h4>Total R$: {} {this.state.totalprice.reduce((acc , num) => acc + num.price, 0)} </h4>
+                          
+                        </div>
+                     
+                </MotherBox>
+            </Container>
       </div>
     );
   }
