@@ -56,12 +56,11 @@ const Box = styled.div`
 `
 const Card = styled.section`
 
-border: ${
-  (props) =>
-    props.BoxList ? 'solid':
-    props.Box    ? 'none':
-    props.theme.primary
-};
+border: ${(props) =>
+    props.BoxList ? 'solid' :
+      props.Box ? 'none' :
+        props.theme.primary
+  };
 `
 const BoxItems = styled.div`
 
@@ -177,21 +176,21 @@ export default class CarShopping extends Component {
     ],
     listCar: [],
     totalPrice: [],
-    
+
   }
 
   handleAdd = (id) => {
-    
-    const {car} = this.state;
-    const ListCar = this.state.listCar;  
-      this.setState({
-        listCar:this.state.listCar.concat(car.find((item) => item.id === id)),
-        totalPrice:this.state.totalPrice.concat(ListCar)
-      });
+
+    const { car } = this.state;
+    const ListCar = this.state.listCar;
+    this.setState({
+      listCar: this.state.listCar.concat(car.find((item) => item.id === id)),
+      totalPrice: this.state.totalPrice.concat(ListCar)
+    });
   }
 
   handleRemove = (id) => {
-    
+
     if (this.state.listCar !== []) {
       this.setState({
         listCar: this.state.listCar.filter((item) => {
@@ -205,10 +204,10 @@ export default class CarShopping extends Component {
   }
 
   handleRemoveAll = () => {
-    if(this.state.listCar && this.state.totalPrice !==[]){
+    if (this.state.listCar && this.state.totalPrice !== []) {
       this.setState({
-        listCar:[],
-        totalPrice:[]
+        listCar: [],
+        totalPrice: []
       })
     }
   }
@@ -224,7 +223,7 @@ export default class CarShopping extends Component {
 
           <BoxList>
             {this.state.car.map((item) => (
-              <Card draggable="true">
+              <Card draggable="true" aria-disabled="false">
 
                 <BoxItems
                   style={{
@@ -233,7 +232,7 @@ export default class CarShopping extends Component {
                     justifyContent: "space-between"
                   }}>
                   <SubTitle><b>Nome:</b> {item.Nome}</SubTitle>
-                    <Img  onClick={() => { this.handleAdd(item.id) }} src={Add} alt="botão add" />
+                  <Img onClick={() => { this.handleAdd(item.id) }} src={Add} alt="botão add" />
                 </BoxItems>
                 <BoxItems style={{ display: "flex", flexDirection: "column" }}>
                   <Items><b>Montadora:</b> {item.Montadora}</Items>
@@ -246,7 +245,7 @@ export default class CarShopping extends Component {
 
           <Box>
             {this.state.listCar.map((item, index) => (
-              <Card >
+              <Card aria-disabled="true">
                 <BoxItems
                   key={index}
                   style={{
@@ -272,18 +271,19 @@ export default class CarShopping extends Component {
 
               </Card>
             ))}
+            <SubTitle style={{marginTop:"55vh"}}>Arraste seus carros preferidos aqui :)</SubTitle>
           </Box>
         </Container>
 
         <PriceCard style={{ width: "33vw" }}>
           <Price>
-            <b> Total R$:{ }</b> 
-          {this.state.listCar.reduce((acc, num) => acc + num.Preço, 0).toFixed(3)}
+            <b> Total R$:{ }</b>
+            {this.state.listCar.reduce((acc, num) => acc + num.Preço, 0).toFixed(3)}
           </Price>
           <StyledButton onClick={this.handleRemoveAll}>
-          <Img src="https://image.flaticon.com/icons/png/512/18/18297.png" alt="lixo" />
+            <Img src="https://image.flaticon.com/icons/png/512/18/18297.png" alt="lixo" />
           </StyledButton>
-        </PriceCard>     
+        </PriceCard>
       </>
     )
   }
