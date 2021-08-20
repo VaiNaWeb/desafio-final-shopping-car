@@ -52,6 +52,7 @@ const Box = styled.div`
   border: 1px solid;
   background-image: url(${CarModel});
   background-repeat: no-repeat;
+  
  
 `
 const Card = styled.section`
@@ -271,7 +272,7 @@ export default class CarShopping extends Component {
 
               </Card>
             ))}
-            <SubTitle style={{marginTop:"55vh"}}>Arraste seus carros preferidos aqui :)</SubTitle>
+           
           </Box>
         </Container>
 
