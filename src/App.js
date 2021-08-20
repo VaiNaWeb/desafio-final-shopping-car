@@ -4,6 +4,7 @@ import styled from "styled-components";
 import add from './assets/add.svg'
 import remove from './assets/remove.svg'
 import mcqueen from './assets/car.svg'
+import lixeira from './assets/full-trash.png'
 
 const GlobalStyle = createGlobalStyle`
     margin: 0;
@@ -100,6 +101,16 @@ const Draghere = styled.div`
     height:100%;
     align-items: flex-end;
 `;
+const Total = styled.div`
+    display: flex;
+    justify-content: space-between;  
+  
+`;
+const Bin = styled.img`
+    width: 40px;
+    height: 40px;
+    margin-top: .6rem;
+`;
 
 class App extends Component {
 
@@ -107,7 +118,7 @@ class App extends Component {
     car: [{
         name: 'Jetta',
         company: 'Volkswagen',
-        price: 144000,
+        price: 144000.,
         type: 'Sedan',
         id: 1,
       },
@@ -173,7 +184,6 @@ class App extends Component {
 
   handleAdd = (id) => {
     const Vehicles = this.state.car.find((item) => item.id === id);
-    const Prices = this.state.totalprice.reduce((acc , num) => acc + num.price, 0)
     if (this.state.carlist !== [this.state.id]) {
       this.setState({
         carlist: this.state.carlist.concat(Vehicles),
@@ -181,7 +191,6 @@ class App extends Component {
       },() => this.setState({
         totalprice: this.state.totalprice.concat(this.state.carlist)
       }))
-      console.log(Prices)
     }}
 
   handleRemove = (id) => {
@@ -219,7 +228,7 @@ class App extends Component {
                       <img onClick={() => this.handleAdd(item.id)} src={add} alt="add button" />
                     </TitleCar>
                     <Li><b>Montadora:</b> {item.company} </Li>
-                    <Li><b>Preço:</b> R${item.price} </Li>
+                    <Li><b>Preço:</b> R${Number(item.price)} </Li>
                     <Li><b>Tipo:</b> {item.type} </Li>
                 </BoxCar>
               ))}
@@ -242,11 +251,13 @@ class App extends Component {
                           <h4>Arraste seus carros preferidos aqui :)</h4> 
                         </Draghere>  
                     </ListBox>
+                      
+
+                        <Total>
+                          <h4>Total R$: {} {this.state.carlist.reduce((acc , num) => acc + num.price, 0)} </h4>
+                          <Bin onClick={this.handleErase} src={lixeira} alt="clean button"/>
+                        </Total>
                        
-                        <div>
-                          <h4>Total R$: {} {this.state.totalprice.reduce((acc , num) => acc + num.price, 0)} </h4>
-                          
-                        </div>
                      
                 </MotherBox>
             </Container>
