@@ -237,10 +237,11 @@ class App extends Component {
           </Shoplist>
         </Container>
         <Valor>
-          TOTAL R$ {this.state.listcar.reduce((a,b) => a + b.Preco, 0)}
+              TOTAL R$ {this.state.listcar.reduce((a,b) => a + b.Preco, 0).toLocaleString('pt-BR')}
         </Valor>
       </div>
     )
+
   }
 }
 export default App;
