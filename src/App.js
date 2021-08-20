@@ -231,23 +231,18 @@ class CarShop extends Component {
   }
 
   clearShopList = (id) =>{
-    const mapList = this.state.cars.map( item => {
-      if(item.id === id){
-        return {...item, isDisabled:false}
-      }
-      return item
-    } )
+    const {shopList, cars} = this.state
     this.setState({
-      shopList: mapList.filter((item) => {
+      shopList: shopList.filter((item) => {
         return (item.id === id)
       }),
-      cars: this.state.cars
+      cars: cars
     })
   }
 
 
   render() {
-    const {cars} = this.state
+    const {shopList, cars} = this.state
     return (
       <Container>
         <GlobalStyle />
@@ -276,7 +271,7 @@ class CarShop extends Component {
           </CardContainer>
           <ListContainer>
             <List>
-              {this.state.shopList.map(item => (
+              {shopList.map(item => (
                 <ListCard>
                   <ListCarName>
                     <h3>{item.name}</h3>
@@ -291,7 +286,7 @@ class CarShop extends Component {
             </List>
             <Total>
               <h2>Total</h2>
-              <h2>{this.state.shopList.reduce((total, item)=> total + item.price, 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</h2>
+              <h2>{shopList.reduce((total, item)=> total + item.price, 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</h2>
             </Total>
             <ClearButton>
               <button className="button" onClick={() => {this.clearShopList()}}>Clear shop list</button>
