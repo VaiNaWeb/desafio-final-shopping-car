@@ -1,7 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 import React, { Component } from 'react'
 import styled from 'styled-components'
-
+import CarModel from './assets/car.svg'
+import Add from './assets/add.svg'
+import Remove from './assets/remove.svg'
 
 const GlobalStyle = createGlobalStyle`
  *{
@@ -23,19 +25,21 @@ code {
     monospace;
 }
 `
-const SubTitle = styled.h4`
-opacity:0.8;
+const Container = styled.main`
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items: center;
 `
-
 const BoxList = styled.div`
- display:flex;
- justify-content:space-evenly;
- align-items:center;
- flex-wrap:wrap;
- width:60vw;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-evenly;
+  padding: 4vw;
+  width:60vw;
+  height:90vh;
 `
-
-
 const Box = styled.div`
   display: flex;
   flex-direction:column;
@@ -46,44 +50,61 @@ const Box = styled.div`
   height:85vh;
   width:35vw;
   border: 1px solid;
-  
+  background-image: url(${CarModel});
+  background-repeat: no-repeat;
+ 
 `
-const Container = styled.main`
-  width:100%;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-   aling-items:center
+const Card = styled.section`
 
+border: ${
+  (props) =>
+    props.BoxList ? 'solid':
+    props.Box    ? 'none':
+    props.theme.primary
+};
 `
-const Lista = styled.ul`
-  display:flex;
-  height:30vh;
-  width:16vw;
-  justify-content:center;
-  align-items:center; 
-  list-style:none;
-`
-const Remove = styled.button`
-  background-color: transparent;
-  border: none;
-`;
-const Items = styled.li`
-  flex-direction:column;
-  display:flex;
-  height:15vh;
-  align-items:center;
-  justify-content:center;
-`
+const BoxItems = styled.div`
 
-const Card = styled.p`
 display: flex;
-flex-wrap:wrap;
 border: 0.6px solid;
 width:15vw;
+trasition:1s;
+&:hover{
+  cursor:pointer;
+}
 `
+const Items = styled.p`
+ font-size:1.3vw;
+ display:flex;
+ border-bottom: 1px solid;
+ justify-content: space-evenly;
+`
+const PriceCard = styled.div`
+  display:flex;
+  justify-content:flex-end;
+  margin-left: 64vw;
+`
+const Title = styled.h1`
+text-align: center;
+`
+const SubTitle = styled.h4`
+opacity:0.8;
+`
+const Img = styled.img`
+border:none;
+width:30px;
+cursor:pointer
+`
+const Price = styled.p`
+  display:flex;
+  justify-content:space-between;
+  
+  width:33vw;
+`
+const StyledButton = styled.button`
+  border:none;
 
-
+`
 
 export default class CarShopping extends Component {
 
@@ -155,83 +176,114 @@ export default class CarShopping extends Component {
 
     ],
     listCar: [],
-    totalPrice: []
+    totalPrice: [],
+    
   }
-  
 
   handleAdd = (id) => {
-    const Carros = this.state.car.find((item) => item.id === id);
     
-    this.setState({
-      listCar: this.state.listCar.concat(Carros),
-      
-    }, () => this.setState({
-      totalPrice: this.state.totalPrice.concat(this.state.listCar)
-    }))
-    
-    console.log(Carros)
+    const {car} = this.state;
+    const ListCar = this.state.listCar;  
+      this.setState({
+        listCar:this.state.listCar.concat(car.find((item) => item.id === id)),
+        totalPrice:this.state.totalPrice.concat(ListCar)
+      });
   }
 
   handleRemove = (id) => {
+    
     if (this.state.listCar !== []) {
       this.setState({
         listCar: this.state.listCar.filter((item) => {
           return (item.id !== id)
         }),
-        totalPrice: this.state.totalPrice.filter((item) =>{
-          return (item.id !==id)
+        totalPrice: this.state.totalPrice.filter((item) => {
+          return (item.id !== id)
         })
       })
     }
   }
 
+  handleRemoveAll = () => {
+    if(this.state.listCar && this.state.totalPrice !==[]){
+      this.setState({
+        listCar:[],
+        totalPrice:[]
+      })
+    }
+  }
 
-
+  handleChange = () => { }
 
   render() {
     return (
       <>
-        <h1>Loja de Carros!!</h1>
+        <Title>Loja de Carros!!</Title>
         <Container>
           <GlobalStyle />
+
           <BoxList>
-            {this.state.car.map((item, index) => (<Lista key={index}>
-              <Items>
-                <Card style={{ backgroundColor: "#F5F5F5", display: "flex", justifyContent: "space-evenly" }}>
+            {this.state.car.map((item) => (
+              <Card draggable="true">
+
+                <BoxItems
+                  style={{
+                    backgroundColor: "#D3D3D3",
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}>
                   <SubTitle><b>Nome:</b> {item.Nome}</SubTitle>
-                  <button onClick={() => { this.handleAdd(item.id) }}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" /></svg></button>
-                </Card>
-                <Card><b> Montadora:</b> {item.Montadora}</Card>
-                <Card><b>Preço: R$:</b>{item.Preço.toFixed(3)}</Card>
-                <Card> <b> Tipo:</b> {item.Tipo}</Card>
-              </Items>
-            </Lista>
+                    <Img  onClick={() => { this.handleAdd(item.id) }} src={Add} alt="botão add" />
+                </BoxItems>
+                <BoxItems style={{ display: "flex", flexDirection: "column" }}>
+                  <Items><b>Montadora:</b> {item.Montadora}</Items>
+                  <Items> <b>Preço:</b> {item.Preço.toFixed(3)}</Items>
+                  <Items> <b>Tipo</b> {item.Tipo}</Items>
+                </BoxItems>
+              </Card>
             ))}
           </BoxList>
-          <Box>
-            <ul style={{ listStyle: "none" }}>
-              {this.state.listCar.map((item, index) => (
-                <li key={index}>
-                  <Card style={{ backgroundColor: "#1E90FF", display: "flex", justifyContent: "space-evenly" }}>
-                    <SubTitle><b>Nome:</b> {item.Nome}</SubTitle>
-                    <Remove onClick={() => { this.handleRemove(item.id); }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z" /></svg>
-                    </Remove>
-                  </Card>
 
-                  <Card><b>Tipo:</b> {item.Tipo} <b>Preço: R$:</b>{item.Preço.toFixed(3)}</Card>
-                </li>
-              ))}
-            </ul>
-            <Card style={{ width: "33vw" }}>
-              <p> Total R$:{}
-              {this.state.listCar.length === 0  ? 0 :this.state.totalPrice.reduce((acc, num) => acc + num.Preço, 0).toFixed(3)}  
-              </p>
-            </Card>
+          <Box>
+            {this.state.listCar.map((item, index) => (
+              <Card >
+                <BoxItems
+                  key={index}
+                  style={{
+                    backgroundColor: "#1E90FF",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "33.5vw",
+                    border: " 0.2px #87CEFA  solid"
+                  }}>
+                  <SubTitle><b>Nome:</b>{item.Nome}</SubTitle>
+                  <Img src={Remove} onClick={() => { this.handleRemove(item.id); }} />
+                </BoxItems>
+                <BoxItems
+                  style={{
+                    width: "33.5vw",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    border: "0.2px #87CEFA solid"
+                  }}>
+                  <Items><b>Tipo:</b>{item.Tipo}</Items>
+                  <Items><b>Preço: R$:</b>{item.Preço.toFixed(3)}</Items>
+                </BoxItems>
+
+              </Card>
+            ))}
           </Box>
-          
         </Container>
 
+        <PriceCard style={{ width: "33vw" }}>
+          <Price>
+            <b> Total R$:{ }</b> 
+          {this.state.listCar.reduce((acc, num) => acc + num.Preço, 0).toFixed(3)}
+          </Price>
+          <StyledButton onClick={this.handleRemoveAll}>
+          <Img src="https://image.flaticon.com/icons/png/512/18/18297.png" alt="lixo" />
+          </StyledButton>
+        </PriceCard>     
       </>
     )
   }
