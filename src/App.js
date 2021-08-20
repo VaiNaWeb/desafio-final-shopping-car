@@ -5,6 +5,7 @@ import add from './assets/add.svg'
 import remove from './assets/remove.svg'
 import mcqueen from './assets/car.svg'
 import lixeira from './assets/full-trash.png'
+import { DragDropContext } from 'react-beautiful-dnd';
 
 const GlobalStyle = createGlobalStyle`
     margin: 0;
@@ -204,13 +205,37 @@ class App extends Component {
         })
       })
   }}
+
   handleErase = () => {
     if (this.state.carlist && this.state.totalprice !== [])
     this.setState({
-      carlist: "",
-      totalprice: ""
+      carlist: this.state.carlist.filter(() => {
+        return ("")
+      })
     })
   }
+
+  handleDragStart = (e,name) =>{
+    console.log(name)
+    e.dataTransfer.setData("id",name)
+  }
+  
+  handleDragOver = (e) => {
+    e.preventDefault()
+  }
+
+  handleOnDrop = (id) => {
+    console.log(this.state.carlist)
+    let carlist = this.state.carlist.filter((item) =>{
+      if(this.state.carlist === id){
+        return (item.id)
+      }
+    })
+    this.setState({
+      carlist: carlist
+    })
+  }
+
 
   render(){
     return (
@@ -222,7 +247,7 @@ class App extends Component {
           <Container>
               <CarBoxInfo>
                 {this.state.car.map((item, index) => (
-                <BoxCar key={index}>
+                <BoxCar draggable onDragStart={(e) => {this.handleDragStart(e,item.name)}} key={index}>
                     <TitleCar>
                       <Li>{item.name}</Li>
                       <img onClick={() => this.handleAdd(item.id)} src={add} alt="add button" />
@@ -236,7 +261,7 @@ class App extends Component {
                 <MotherBox>
                     <ListBox>
                       {this.state.carlist.map((item, index) => (
-                      <ListContainer key={index}>
+                      <ListContainer onDragOver={(e) => this.handleDragOver(e)} onDrop={(e) => this.handleOnDrop(e,"carlist")} key={index}>
                           <TitleList>
                             <Li>{item.name}</Li>
                             <img onClick={() => this.handleRemove(item.id)} src={remove} alt="remove button" />
@@ -250,15 +275,11 @@ class App extends Component {
                         <Draghere>
                           <h4>Arraste seus carros preferidos aqui :)</h4> 
                         </Draghere>  
-                    </ListBox>
-                      
-
+                    </ListBox>       
                         <Total>
                           <h4>Total R$: {} {this.state.carlist.reduce((acc , num) => acc + num.price, 0)} </h4>
-                          <Bin onClick={this.handleErase} src={lixeira} alt="clean button"/>
+                          <Bin onClick={this.handleErase} src={lixeira} alt="trash bin button"/>
                         </Total>
-                       
-                     
                 </MotherBox>
             </Container>
       </div>
