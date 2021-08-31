@@ -5,23 +5,18 @@ import Simb2 from "./assets/add.svg";
 import Car from "./assets/car.svg"
 
 const List = styled.div`
-
 width: 230px;
 border: solid #353839 1px;
 margin: 5px;
 cursor: pointer;
 height: 164px;
-
 &:hover {
   transform: scale(102%);
 }
-
 `
-
 const Container = styled.div`
 width: 100%;
 display: flex;
-
 `
 const Titlecard = styled.div `
 background-color: #F5F5F5;
@@ -29,8 +24,6 @@ background-color: #F5F5F5;
     align-items: center;
     justify-content: space-between;
     padding: 5px;
-
-
 `
 
 const Shoplist = styled.div` 
@@ -43,13 +36,11 @@ width: 950px;
     background-size: 100%;
     background-repeat: no-repeat;
 `
-
 const Shopcar = styled.div`
 display: flex;
 flex-wrap: wrap;
 max-width: 1420px;
 padding: 1rem;
-
 `
 const Carblock = styled.div`
 width: 400px;
@@ -59,10 +50,6 @@ border-radius: 4px;
 display: flex;
 justify-content: space-evenly;
 background-color: white;
-
-
-
-
 `
 const Namecar = styled.div`
     border-radius:  4px 4px 0px 0px ;
@@ -76,33 +63,18 @@ const Namecar = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 5px;
-    
-   
-
 `
 const Valor = styled.b`
-
 display: flex;
 justify-content: flex-end;
 margin-right: 22rem;
-
-
-
 `
 
-
-
 class App extends Component {
-
-
-
-
+  
   state = {
-    
     listcar: [],
-
     car: [
-
       {
         id: 1,
         Nome: "Jetta",
@@ -110,7 +82,6 @@ class App extends Component {
         Preco: 144000,
         Tipo: "Sedan",
       },
-
       {
         id: 2,
         Nome: "Polo",
@@ -118,7 +89,6 @@ class App extends Component {
         Preco: 70000,
         Tipo: "Hatch",
       }
-
       , {
         id: 3,
         Nome: "T-Cross",
@@ -134,9 +104,7 @@ class App extends Component {
         Preco: 146000,
         Tipo: "SUV",
       }
-
       , {
-
         id: 5,
         Nome: "Civic",
         Montadora: "Honda",
@@ -151,7 +119,6 @@ class App extends Component {
         Preco: 110000,
         Tipo: "Sedan",
       }
-
       , {
         id: 7,
         Nome: "Corolla Cross",
@@ -166,9 +133,7 @@ class App extends Component {
         Montadora: "Jeep",
         Preco: 132000,
         Tipo: "SUV",
-        
       }
-
 
       , {
         id: 9,
@@ -176,30 +141,25 @@ class App extends Component {
         Montadora: "Volkswagen",
         Preco: 138000,
         Tipo: "Hatch",
-        
       }
     ]
   }
 
-
   handleClick = (id) => {
-    const { listcar, car} = this.state
+    const { listcar, car } = this.state
     const card = car.find((item) => item.id === id)
     this.setState({
       listcar: listcar.concat(card)
     })
   }
 
-
   delete = (id) => {
-    const { listcar} = this.state
+    const { listcar } = this.state
     this.setState({
       listcar: listcar.filter((item) => {
         return item.id !== id;
       })
     })
-   
-
   }
 
   render() {
@@ -209,14 +169,22 @@ class App extends Component {
         <Container>
           <Shopcar>
             {this.state.car.map((item, index) => (
-              <List key={index} >
+              <List key={index}>
                 <Titlecard>
                  <b>{item.Nome}</b>
                 <img src={Simb2} onClick={() => this.handleClick(item.id)} ></img>
                 </Titlecard>
-                <p> <b> Montadora: </b>     {item.Montadora} </p>
-                <p> <b> Preço:     </b>  R$ {item.Preco.toLocaleString('pt-br')}     </p>
-                <p> <b> Tipo:      </b>     {item.Tipo}      </p>
+                <p>
+                  <b>Montadora:</b>
+                  {item.Montadora}</p>
+                <p>
+                  <b>Preço:</b>
+                  R${item.Preco.toLocaleString('pt-br')}
+                </p>
+                <p>
+                  <b>Tipo:</b>
+                  {item.Tipo}
+               </p>
               </List>
             ))}
           </Shopcar>
@@ -225,19 +193,26 @@ class App extends Component {
               <div>
                 <Namecar>
                 <b>{item.Nome}</b>
-                  <img src={Simb} onClick={() => this.delete(item.id)} >
+                  <img src={Simb} 
+                  onClick={() => this.delete(item.id)} >
                   </img>
                 </Namecar>
                 <Carblock>
-                  <p> <b> Preço: </b> R$ {item.Preco.toLocaleString('pt-br')} </p>
-                  <p> <b> Tipo:  </b>    {item.Tipo}  </p>
+                  <p> 
+                    <b>Preço:</b>
+                    R$ {item.Preco.toLocaleString('pt-br')}
+                 </p>
+                  <p> 
+                   <b>Tipo:</b> 
+                   {item.Tipo} 
+                 </p>
                 </Carblock>
               </div>
             ))}
           </Shoplist>
         </Container>
         <Valor>
-              TOTAL R$ {this.state.listcar.reduce((a,b) => a + b.Preco, 0).toLocaleString('pt-BR')}
+              TOTAL R${this.state.listcar.reduce((a,b) => a + b.Preco, 0).toLocaleString('pt-BR')}
         </Valor>
       </div>
     )
