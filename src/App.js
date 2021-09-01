@@ -176,7 +176,8 @@ class App extends Component {
                 </Titlecard>
                 <p>
                   <b>Montadora:</b>
-                  {item.Montadora}</p>
+                  {item.Montadora}
+                </p>
                 <p>
                   <b>Preço:</b>
                   R${item.Preco.toLocaleString('pt-br')}
